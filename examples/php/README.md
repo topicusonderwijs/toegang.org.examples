@@ -8,7 +8,7 @@ There are two ways of validating the logged in user:
 Both ways are available in this demo application.
 
 ## Installation
-To install the small set of dependencies for this example application you need to run [Composer](http://github.com):
+To install the small set of dependencies for this example application you need to run [Composer](https://getcomposer.org/):
 
 ```composer install```
 
