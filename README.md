@@ -60,9 +60,9 @@ Het response-object is een JSON Web Key Set (JWKS), voor meer informatie zie de 
 Er zijn een aantal voorbeeld applicaties gemaakt waarin is uitgewerkt hoe de JWS kan worden geverieerd. 
 Er zijn voorbeeld applicaties in de volgende talen:
 - PHP  
-`TODO github link`;
+https://github.com/topicusonderwijs/toegang.org.examples/tree/master/examples/php;
 - Node.js  
-`TODO github link`. 
+https://github.com/topicusonderwijs/toegang.org.examples/tree/master/examples/nodejs. 
 
 ## Terugkoppeling naar Toegang.org
 De uitgever kan terugkoppelen aan Toegang.org dat de gebruiker goed is ontvangen bij de uitgever. 
