@@ -62,13 +62,12 @@ if (empty($jws)) {
     } else {
         echo '+ JWS has not expired yet<br/>';
     }
-
+    // name of your organisation, check if correct!
     $aud = $decoded_array['aud'];
-    if(!empty($aud) && $aud != $clientId) {
-        echo '- Error. Client id and audience don\'t match!<br/>';
-    } else {
-        echo '+ Valid audience<br/>';
-    }
+    /**
+     * if ($aud === "NameOfPublisher")
+     *   echo "Token for incorrect organisation"
+     */
     /**
      * The payload will contain a 'rnd' property. It is wise to validate if this value hasn't been used before by
      * storing it in a cache/db. In this example we won't check 'rnd'.
