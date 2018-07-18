@@ -1,8 +1,6 @@
 const validator = require('./validator')
 const callback = require('./callback');
 
-const YOUR_CLIENT_ID = 'test';
-
 /**
  * This function checks the token and validates
  * if this is a signed token by toegang.org so you can login this specific user.
@@ -13,7 +11,7 @@ module.exports = async function(req, res, next) {
     console.log(`Token found : ${token}`);
 
     try {
-        const payload = await validator.verify(token, YOUR_CLIENT_ID);
+        const payload = await validator.verify(token);
         if (!payload) {
             res.write(JSON.parse('{"error": "Token invalid!"}'));
             res.end();
