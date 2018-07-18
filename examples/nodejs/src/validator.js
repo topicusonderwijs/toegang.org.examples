@@ -50,7 +50,7 @@ module.exports.verify = async function(jws, authClientId){
     let currentTime = Date.now();
     let payload = JSON.parse(buffer.payload);
 
-    if (payload.aud !== authClientId) {
+    if (authClientId && payload.aud !== authClientId) {
         throw new Error('JWT audience invalid');
     }
     if (payload.exp && payload.exp < currentTime) {
