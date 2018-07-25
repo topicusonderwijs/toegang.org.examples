@@ -73,7 +73,7 @@ if (empty($jws)) {
      * storing it in a cache/db. In this example we won't check 'rnd'.
      */
 
-     echo '<br/><br/>EXP = expiry, SUB = subject (account), ingelogde gebruiker, EAN = europese artikelnummering, AUD = audience, your publisher name. ORG (optional) = organisation of the subject account, FN (optional) = first name of the user account';
+     echo '<br/><br/>EXP = expiry, SUB = subject (account), ingelogde gebruiker, EAN = europese artikelnummering, AUD = audience, your publisher name. ORG (optional) = organisation of the subject account, FN (optional) = first name of the user account, LAC (optional) = linked accounts, historic account identifiers (merges)';
 
     $data = array("jws"=>$jws, "payload"=>$decoded_array);
     $payload = json_encode($data);

@@ -37,6 +37,8 @@ tlink | Ja        | De TLink-code van de licentie.
 ean   | Ja        | De EAN van het product.
 aud   | Ja        | De naam van de organisatie van de uitgever
 ref   | Ja        | De meldcode voor de helpdesk om de gebruiker te kunnen volgen door het proces.
+lac   | Nee       | Linked accounts; historische identifiers van deze gebruiker door bijvoorbeeld een fusie of account merge
+
 
 ### Verificatie-endpoint
 Het verificatie-endpoint verifieert het JWS en stuurt de inhoud weer terug. Het verificatie endpoint is bereikbaar op `https://api.toegang.org/jwt/verify`.  
