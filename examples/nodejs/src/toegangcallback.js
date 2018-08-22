@@ -11,7 +11,7 @@ module.exports = async function(req, res, next) {
     console.log(`Token found : ${token}`);
 
     try {
-        const payload = await validator.verify(token);
+        const payload = await validator.verify(token, /* Use your publisher name here to check if this token is meant for you*/"UitgeverX");
         if (!payload) {
             res.write(JSON.parse('{"error": "Token invalid!"}'));
             res.end();

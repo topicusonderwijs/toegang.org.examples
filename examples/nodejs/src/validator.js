@@ -43,14 +43,14 @@ async function getKey(){
     return keyStore.all({ kty: 'RSA' })[0];
 }
 
-module.exports.verify = async function(jws, authClientId){
+module.exports.verify = async function(jws, publisherName){
     let key = await getKey();
     let buffer = await JWS.createVerify(key, {algorithms: ['RS256']}).verify(jws);
 
     let currentTime = Date.now();
     let payload = JSON.parse(buffer.payload);
 
-    if (authClientId && payload.aud !== authClientId) {
+    if (publisherName && payload.aud !== publisherName) {
         throw new Error('JWT audience invalid');
     }
     if (payload.exp && payload.exp < currentTime) {

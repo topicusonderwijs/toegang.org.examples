@@ -96,7 +96,7 @@ Statuscode | Omschrijving
 400        | Het request object was niet in het juiste formaat.
 401        | De JWS is niet geldig.
 
-## Beheer het authorizatieniveau
+## Beheer het autorisatieniveau
 De gebruiker die via Toegang.org op de toegangsurl terechtkomt is geautoriseerd om de content te benaderen, 
 maar er zal nog een aanvullende authenticatie moeten plaatsvinden om de gebruiker toegang te geven tot persoonlijke gegevens,
 zoals toetsresultaten.

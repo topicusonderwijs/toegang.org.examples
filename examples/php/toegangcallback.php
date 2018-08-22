@@ -35,9 +35,9 @@ S+UygUu7kEwfnJ0a/+pl/PwUDvD0hzwRk77pWU0ChS3cO+haeHbM+CfOeBKiuaZl
 EOD;
 
 /**
- * Replace this with your client id:
+ * Replace this with your publisher name:
  */
-$clientId = 'test';
+$uitgeverNaam = 'UitgeverX';
 
 /**
  * Get the posted JWT
@@ -64,10 +64,11 @@ if (empty($jws)) {
     }
     // name of your organisation, check if correct!
     $aud = $decoded_array['aud'];
-    /**
-     * if ($aud === "NameOfPublisher")
-     *   echo "Token for incorrect organisation"
-     */
+
+    if ($aud === $uitgeverNaam){
+      echo "Token for incorrect organisation";
+    }
+
     /**
      * The payload will contain a 'rnd' property. It is wise to validate if this value hasn't been used before by
      * storing it in a cache/db. In this example we won't check 'rnd'.

@@ -1,6 +1,5 @@
 const url = require('url');
-const validator = require('./validator')
-const YOUR_CLIENT_ID = 'test';
+const validator = require('./validator');
 
 module.exports = async function(req, res, next) {
     res.write(`<html><body>
