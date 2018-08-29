@@ -43,7 +43,7 @@ $uitgeverNaam = 'UitgeverX';
  * Replace this with the actual endpoint of the toegang.org Callback API.
  * For more information, contact our support team.
  */
-$callbackEndpoint = 'https://dev.toegang.org:8081/callback/'; //'http://localhost:8081/callback/'
+$callbackEndpoint = 'http://localhost:8081/callback/'
 
 /**
  * Get the posted JWT
