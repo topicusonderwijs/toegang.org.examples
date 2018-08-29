@@ -40,9 +40,36 @@ EOD;
 $uitgeverNaam = 'UitgeverX';
 
 /**
+ * Replace this with the actual endpoint of the toegang.org Callback API.
+ * For more information, contact our support team.
+ */
+$callbackEndpoint = 'https://dev.toegang.org:8081/callback/'; //'http://localhost:8081/callback/'
+
+/**
  * Get the posted JWT
  */
 $jws = $_POST['jws'];
+
+function doCallback($payload, $endpoint)
+{
+    $headers = array('Content-Type: application/json', 'Content-Length: ' . strlen($payload));
+
+    $options = [
+        CURLOPT_URL => $endpoint,
+        CURLOPT_HTTPHEADER => $headers,
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => $payload,
+    ];
+
+    $curl = curl_init();
+    curl_setopt_array($curl, $options);
+
+    $result = curl_exec($curl);
+    $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    echo "<br/>Callback return status: " . $httpcode;
+
+    curl_close($curl);
+}
 
 if (empty($jws)) {
     echo 'JWS should not be empty!';
@@ -58,28 +85,26 @@ if (empty($jws)) {
     $currentTime = time() * 1000;
     $exp = $decoded_array['exp'];
     if (!empty($exp) && $exp < $currentTime) {
-        echo '- Error. JWS has expired<br/>';
+        echo '- <Error></Error>. JWS has expired<br/>';
     } else {
         echo '+ JWS has not expired yet<br/>';
     }
     // name of your organisation, check if correct!
     $aud = $decoded_array['aud'];
 
-    if ($aud === $uitgeverNaam){
-      echo "Token for incorrect organisation";
+    if ($aud === $uitgeverNaam) {
+        echo "Token for incorrect organisation";
     }
 
     /**
-     * The payload will contain a 'rnd' property. It is wise to validate if this value hasn't been used before by
+     * The payload will contain a 'rnd' property. It is wise to validate that this value hasn't been used before, by
      * storing it in a cache/db. In this example we won't check 'rnd'.
      */
 
-     echo '<br/><br/>EXP = expiry, SUB = subject (account), ingelogde gebruiker, EAN = europese artikelnummering, AUD = audience, your publisher name. ORG (optional) = organisation of the subject account, FN (optional) = first name of the user account, LAC (optional) = linked accounts, historic account identifiers (merges)';
-
-    $data = array("jws"=>$jws, "payload"=>$decoded_array);
+    echo '<br/><br/>EXP = expiry, SUB = subject (account), ingelogde gebruiker, EAN = europese artikelnummering, AUD = audience, your publisher name. ORG (optional) = organisation of the subject account, FN (optional) = first name of the user account, LAC (optional) = linked accounts, historic account identifiers (merges)<br/>';
+    $data = array("jws" => $jws, "payload" => $decoded_array);
     $payload = json_encode($data);
-    echo '<pre>' . $payload . '</pre>';
-    echo '<script>function callback() { fetch("http://localhost:8081/callback/", {method: "POST", mode: "cors", headers: {"content-type": "application/json"}, body: JSON.stringify(' . $payload . ')}).then(r => alert(r.status)).catch(console.error);}</script>';
-    echo '<button onclick="callback()">Perform callback</button>';
+
+    doCallback($payload, $callbackEndpoint);
 }
 ?>
