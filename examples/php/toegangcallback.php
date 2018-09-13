@@ -59,6 +59,9 @@ function doCallback($payload, $endpoint)
         CURLOPT_HTTPHEADER => $headers,
         CURLOPT_POST => true,
         CURLOPT_POSTFIELDS => $payload,
+        // If you are experiencing redirect issues, enable the following parameters:
+        //CURLOPT_FOLLOWLOCATION => true,
+        //CURLOPT_CUSTOMREQUEST => "POST"
     ];
 
     $curl = curl_init();
