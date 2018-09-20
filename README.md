@@ -27,17 +27,18 @@ De JWS kan op twee manieren worden geverifieerd:
 
 De payload van de geverifieerde JWS bevat de volgende velden:
 
-Veld  | Verplicht | Omschrijving
----   | :---:     | ---
-org   | Nee       | ESN van de school van de gebruiker of organisatie waar die school onder valt
-fn    | Nee       | Voornaam van de gebruiker
-sub   | Ja        | Id van de account die uniek is voor de uitgever
-exp   | Ja        | Timestamp van het tijdstip tot wanneer de JWS geldig is.
-tlink | Ja        | De TLink-code van de licentie.
-ean   | Ja        | De EAN van het product.
-aud   | Ja        | De naam van de organisatie van de uitgever
-ref   | Ja        | De meldcode voor de helpdesk om de gebruiker te kunnen volgen door het proces.
-lac   | Nee       | Linked accounts; historische identifiers van deze gebruiker door bijvoorbeeld een fusie of account merge
+Veld    | Verplicht | Omschrijving
+---     | :---:     | ---
+org     | Nee       | ESN van de school van de gebruiker of organisatie waar die school onder valt
+orgname | Nee       | Naam van de school van de gebruiker of organisatie waar die school onder valt
+fn      | Nee       | Voornaam van de gebruiker
+sub     | Ja        | Id van de account die uniek is voor de uitgever
+exp     | Ja        | Timestamp van het tijdstip tot wanneer de JWS geldig is.
+tlink   | Ja        | De TLink-code van de licentie.
+ean     | Ja        | De EAN van het product.
+aud     | Ja        | De naam van de organisatie van de uitgever
+ref     | Ja        | De meldcode voor de helpdesk om de gebruiker te kunnen volgen door het proces.
+lac     | Nee       | Linked accounts; historische identifiers van deze gebruiker door bijvoorbeeld een fusie of account merge
 
 
 ### Verificatie-endpoint
