@@ -39,18 +39,18 @@ ean     | Ja        | De EAN van het product.
 aud     | Ja        | De naam van de organisatie van de uitgever
 ref     | Ja        | De meldcode voor de helpdesk om de gebruiker te kunnen volgen door het proces.
 lac     | Nee       | Linked accounts; historische identifiers van deze gebruiker door bijvoorbeeld een fusie of account merge
-rol	| Nee	    | Rol van de ingelogde gebruiker (eduPersonAffiliation)
+rol	    | Nee	    | Rol van de ingelogde gebruiker (eduPersonAffiliation)
 
 ### Verificatie-endpoint
 Het verificatie-endpoint verifieert het JWS en stuurt de inhoud weer terug. Het verificatie endpoint is bereikbaar op `https://api.toegang.org/jwt/verify`.  
-De testomgeving is bereikbaar op `https://api-test.toegang.org/jwt/verify`.  
+De testomgeving is bereikbaar op `https://api-test.toegang.org/jwt/verify`.
 De JWS moet in de request body als json object worden opgestuurd:
 ```
 {
    "jws": "{JWS}",
 }
 ```
-De JWS is de inhoud van het veld `jws`.  
+De JWS is de inhoud van het veld `jws`.  Een voorbeeldwaarde van de inhoud van dit veld is op `https://api-test.toegang.org/jwt/testjwt` beschikbaar gesteld.
 
 De body van de response is een JSON-object waarvan het veld `payload` de informatie over de gebruiker bevat.
 
