@@ -1,7 +1,11 @@
 <?php
 
+$config = include('config.php');
+
 function getClientCredentialsAccessToken()
 {
+    global $config;
+
     $token = $_SESSION["token"];
     $expiry = $_SESSION["expiry"];
     if(isset($token) && isset($expiry) && (time() < $expiry)) {
@@ -13,20 +17,17 @@ function getClientCredentialsAccessToken()
      * You could also use a oauth2 client library, but as our php.minversion = 5.3 we use curl.
      * Preferably store your oauth-credentials in your default secure storage.
      */
-    $clientid = '<client-id>';
-    $clientsecret = '<client-secret>';
-    $tokenhost = 'https://idp.toegang.org/token';
 
     $headers = array('Content-Type: application/x-www-form-urlencoded');
 
     $options = [
-        CURLOPT_URL => $tokenhost,
+        CURLOPT_URL => $config['oauth_token_uri'],
         CURLOPT_HTTPHEADER => $headers,
         CURLOPT_POST => true,
-        CURLOPT_USERPWD => $clientid.":".$clientsecret,
+        CURLOPT_USERPWD => $config['oauth_client_id'].":".$config['oauth_client_secret'],
         CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
         CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_POSTFIELDS => "grant_type=client_credentials&client_id=".$clientid
+        CURLOPT_POSTFIELDS => "grant_type=client_credentials&client_id=".$config['oauth_client_id']
     ];
 
     $curl = curl_init();

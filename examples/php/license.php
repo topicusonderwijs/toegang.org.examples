@@ -6,8 +6,7 @@
 * protection and would allow anyone to create licenses by loading an url.
 */
 require_once 'oauthservice.php';
-
-$licenseEndpoint = 'https://dev.toegang.org:8081/tlinklicenses/getLicenseCodes';
+$config = include('config.php');
 
 /**
 * Information on product to create licenses for.
@@ -26,7 +25,7 @@ if(isset($token)){
         $headers = array('Content-Type: application/json', 'Authorization: Bearer '.$token);
         $queryString = "productId=".$productEan."&requestReferenceId=".$referenceId."&distributorId=".$uitgeverId."&amount=".$aantalLicenties;
         $options = [
-            CURLOPT_URL => $licenseEndpoint."?".$queryString,
+            CURLOPT_URL => $config['api_license_uri']."?".$queryString,
             CURLOPT_HTTPHEADER => $headers,
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => "",
