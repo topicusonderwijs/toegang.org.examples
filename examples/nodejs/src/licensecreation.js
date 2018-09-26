@@ -1,6 +1,7 @@
 const oauthservice = require('./authentication/oauthservice');
 const RestClient = require('node-rest-client').Client;
 const uuid = require('uuid/v4');
+const config = require('./config');
 
 /**
  * @param productEan EAN om licenties voor aan te maken
@@ -40,7 +41,7 @@ module.exports = async function(req, res) {
         },
         parameters: licenseObject
     };
-    await toegangClient.post("https://dev.toegang.org:8081/tlinklicenses/getLicenseCodes", args, function (data, response) {
+    await toegangClient.post(config.api_license_uri, args, function (data, response) {
         if(response.statusCode && response.statusCode == 200) {
             res.status(200);
             if(data['codes']){

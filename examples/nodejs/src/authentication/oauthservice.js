@@ -1,12 +1,13 @@
-    const oauth2lib = require('simple-oauth2');
+const oauth2lib = require('simple-oauth2');
+const config = require('../config');
 
 const configuration = {
     client: {
-        id: '<client-id>',
-        secret: '<client-secret>'
+        id: config.oauth_client_id,
+        secret: config.oauth_client_secret
     },
     auth: {
-        tokenHost: 'https://api.toegang.org',
+        tokenHost: config.idp_base_uri,
         tokenPath: '/token'
     }
 };

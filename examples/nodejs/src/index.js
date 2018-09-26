@@ -5,11 +5,11 @@ const bodyParser = require('body-parser');
 const MainPage = require('./mainpage');
 const ToegangCallback = require('./toegangcallback');
 const CreateLicenseBackend = require('./licensecreation');
+const config = require('./config');
 
 
 // If your project doesn't use express, check validator.js for code that validates our token.
 // (depends on node-jose library)
-
 const app = express();
 app.use(bodyParser.urlencoded());
 // mount the frontend application/page (for validation and licensecreate purposes)

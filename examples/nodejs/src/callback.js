@@ -1,5 +1,5 @@
-
 const RestClient = require('node-rest-client').Client;
+const config = require('./config');
 
 module.exports = async function(inputPayload, inputJws){
     const toegangClient = new RestClient();
@@ -9,7 +9,7 @@ module.exports = async function(inputPayload, inputJws){
         headers: { "Content-Type": "application/json" }
     };
     return new Promise((resolve, reject) => {
-        toegangClient.post("http://localhost:8081/callback", args, function (data, response) {
+        toegangClient.post(config.sso_callback_uri, args, function (data, response) {
             if(response.statusCode && response.statusCode === 204)
                 return resolve("OK");
             else
