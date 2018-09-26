@@ -6,10 +6,8 @@ function getClientCredentialsAccessToken()
 {
     global $config;
 
-    $token = $_SESSION["token"];
-    $expiry = $_SESSION["expiry"];
-    if(isset($token) && isset($expiry) && (time() < $expiry)) {
-        return $token;
+    if(isset($_SESSION["token"]) && isset($_SESSION["expiry"]) && (time() < $_SESSION["expiry"])) {
+        return $_SESSION["token"];
     }
 
     /**
