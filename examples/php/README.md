@@ -8,6 +8,7 @@ There are two ways of validating the logged in user:
 Both ways are available in this demo application.
 
 ## Installation
+Requirements: PHP (>= 5.3) & php-curl (install via package manager of your choice)
 To install the small set of dependencies for this example application you need to run [Composer](https://getcomposer.org/):
 
 ```composer install```

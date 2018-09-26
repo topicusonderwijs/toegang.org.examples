@@ -8,6 +8,8 @@ module.exports = async function(req, res, next) {
                         <input id="tokenholder" type="text" name="token">
                         <input type="submit" value="Validate">
                     </form>
+                    or
+                    <a href="/license">Create a license</a>
                     <script>
                         if(window.location.hash){
                             document.getElementById('tokenholder').value = window.location.hash.substr(1);

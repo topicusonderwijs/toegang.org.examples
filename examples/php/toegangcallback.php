@@ -4,6 +4,8 @@ use \Firebase\JWT\JWT;
 
 require_once 'vendor/autoload.php';
 
+$config = include('config.php');
+
 /**
  * This key should not be loaded from the url runtime to keep performance optimal.
  *
@@ -39,11 +41,6 @@ EOD;
  */
 $uitgeverNaam = 'UitgeverX';
 
-/**
- * Replace this with the actual endpoint of the toegang.org Callback API.
- * For more information, contact our support team.
- */
-$callbackEndpoint = 'http://localhost:8081/callback/'
 
 /**
  * Get the posted JWT
@@ -52,6 +49,7 @@ $jws = $_POST['jws'];
 
 function doCallback($payload, $endpoint)
 {
+
     $headers = array('Content-Type: application/json', 'Content-Length: ' . strlen($payload));
 
     $options = [
@@ -108,6 +106,6 @@ if (empty($jws)) {
     $data = array("jws" => $jws, "payload" => $decoded_array);
     $payload = json_encode($data);
 
-    doCallback($payload, $callbackEndpoint);
+    doCallback($payload, $config['sso_callback_uri']);
 }
 ?>

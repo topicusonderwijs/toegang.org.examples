@@ -101,3 +101,12 @@ Statuscode | Omschrijving
 De gebruiker die via Toegang.org op de toegangsurl terechtkomt is geautoriseerd om de content te benaderen, 
 maar er zal nog een aanvullende authenticatie moeten plaatsvinden om de gebruiker toegang te geven tot persoonlijke gegevens,
 zoals toetsresultaten.
+
+## Aanmaken van licenties
+
+Ook bieden we voorbeeldimplementaties voor zowel PHP als NodeJS t.b.v. het aanmaken van licenties op onze API.
+Om gebruik te maken van deze voorbeelden dient er al een product van uw uitgever bekend te zijn bij ons en dient u te beschikken
+over oauth credentials voor een uitgever, zodat u op basis van deze credentials en een
+`EAN`, `UitgeverId` de licenties bij ons kunt aanmaken. De uitgegeven licentiecodes kunnen
+worden doorgegeven aan de eindgebruiken na bijvoorbeeld een aanschaf in een webshop. Mocht u geen oauth credentials hebben,
+kunt u contact met ons opnemen via info@toegang.org of een ander kanaal indien bij u bekend.
