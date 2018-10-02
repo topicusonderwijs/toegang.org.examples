@@ -194,8 +194,23 @@ De verschillende parameters staan voor:
 parameter            | betekenis
 ---                  | ---
 `productId`          | EAN van het product waarvoor de licenties aangemaakt worden.
-`requestReferenceId` | Door de uitgever aangemaakte referentie voor deze batch. Max. 160 karakters.
+`requestReferenceId` | Door de uitgever aangemaakte referentie voor deze batch. Max. 160 karakters. Mag niet eerder gebruikt zijn.
 `amount`             | Aantal licenties dat aangemaakt moet worden.
 `distributorId`      | Naam van de uitgever zoals overeengekomen met TOEGANG.ORG
+
+Bij een succesvol request ziet het response (JSON) er als volgt uit:
+```http request
+{
+    "codes": [
+        "B9Q4KXM6",
+        "CJBCZEQT",
+        ...
+        ],
+    "startDate": "2018-10-02",
+    "endDate": "2024-08-01"
+}
+```
+Hier is `codes` het lijstje met nieuwe TLink-licentiecodes (zo veel als aangevraagd). `startDate` is de startdatum van het
+product als dat nog in de toekomst ligt, en anders de huidige datum. `endDate` is de einddatum van het product.
 
 Voor dit request bieden we voorbeeldimplementaties voor zowel PHP als NodeJS.
