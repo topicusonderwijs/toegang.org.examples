@@ -1,0 +1,242 @@
+{
+	"info": {
+		"_postman_id": "d19eef6a-5641-4714-aea9-4131858a1385",
+		"name": "toegang.org.examples",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Test-JWS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{api-root}}/jwt/testjwt",
+					"host": [
+						"{{api-root}}"
+					],
+					"path": [
+						"jwt",
+						"testjwt"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify JWS",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"jws\": \"eyJhbGciOiJSUzI1NiIsImtpZCI6InpKYzVGYkFHelM2Ul9BOWN1WU43MHQtWThMWXRjRXNuYkZBOVVyMDlONnMifQ.eyJvcmciOiJTY2hvb2xYIiwic3ViIjoiZW5jcnlwdGVkaWRlbnRpZmllciIsImZuIjoiRmlyc3RuYW1lIiwiZXhwIjoxNTM4NDg1MTQxNzE4LCJ0bGluayI6IlRMSU5LMTIzIiwiZWFuIjoiMTIzNDU2Nzg5MDEyMyIsImF1ZCI6Ik5hYW0gdmFuIHVpdGdldmVyIiwicmVmIjoiMTIzLUFCQyIsImxhYyI6WyJlbmNyeXB0ZWRpZGVudGlmaWVyMiIsImVuY3J5cHRlZGlkZW50aWZpZXIzIl0sInJuZCI6ImYyYTZjMzdiLTMzMmEtNDQ1YS05NzM4LTE5Y2RmZDcyZmY1MSIsInJvbCI6ImVtcGxveWVlIn0.Wz2_Aa6Ecuu-vyE2EVOYn_pTjmryxnabKSFjrhmw2g4zVZkuQ_xCpz6h7mA_v2VRDkipUVMPn2A_8Wl82ahqBb1alGanBMARDM2xfIwhufC9iFTDHzHW2EcsGqjRKQnDwtoOP54LOgkEJQTgN22MXKRooX_BnaorgAWnl4VkueHT3gBKlqNBJ8K8a9oqFeop37cfJFIXdNwyrNqIzkmKmEG-Ri9ndwrCjcLMQnGkeSucLOZb-795yeL8CHKO_lG-6TEa7RelW2j3FzhL_4Xv9e2WTwl879pJTqqanI0uVA6eldo8RX1OaRcdVSudOuv3RkFQhNVVz7B5kzxHVkzzgw\"\n}"
+				},
+				"url": {
+					"raw": "{{api-root}}/jwt/verify",
+					"host": [
+						"{{api-root}}"
+					],
+					"path": [
+						"jwt",
+						"verify"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Public key",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{api-root}}/jwt/jwks",
+					"host": [
+						"{{api-root}}"
+					],
+					"path": [
+						"jwt",
+						"jwks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OAuth2 get client token",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{client-secret}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{client-id}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{idp-root}}/token",
+					"host": [
+						"{{idp-root}}"
+					],
+					"path": [
+						"token"
+					]
+				},
+				"description": "Nieuwe licenties uitgeven"
+			},
+			"response": []
+		},
+		{
+			"name": "licenties uitgeven",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "ZWEyZDY4NzktZjViNi00YmZlLWJjYWUtNDZmZTkzYWY3YTRkiSZIzcFjpIhRLgnwXrQUhkVBFqd4dY1WEq5nD4xqc4kDQRa_oJLzJI8XNQgnIYb5Elc7mc1JGNE6eWYpuKPHXA",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{api-root}}/tlinklicenses/getLicenseCodes?amount=5&requestReferenceId=aap&distributorId=Blink Educatie VO&productId=9789491795664",
+					"host": [
+						"{{api-root}}"
+					],
+					"path": [
+						"tlinklicenses",
+						"getLicenseCodes"
+					],
+					"query": [
+						{
+							"key": "amount",
+							"value": "5"
+						},
+						{
+							"key": "requestReferenceId",
+							"value": "123"
+						},
+						{
+							"key": "distributorId",
+							"value": "Edubert"
+						},
+						{
+							"key": "productId",
+							"value": "9789999999664"
+						}
+					]
+				},
+				"description": "Nieuwe licenties uitgeven"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "70fc84d7-c5a0-4075-8917-d71bcbdf6bcc",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "afef8095-795d-4f6f-af0e-d51e0c983254",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "be4c835e-d932-415c-b45d-856418bf690c",
+			"key": "idp-root",
+			"value": "https://idp-test.toegang.org",
+			"type": "string"
+		},
+		{
+			"id": "60b7adb0-b938-4d21-9c87-a117638aa4e8",
+			"key": "api-root",
+			"value": "https://api-test.toegang.org",
+			"type": "string"
+		},
+		{
+			"id": "22aa3d74-a4ad-4205-88f5-8c05bbdd7004",
+			"key": "client-id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "1367d4a2-d3fd-4cc4-9dda-9b1d5cbddb3a",
+			"key": "client-secret",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

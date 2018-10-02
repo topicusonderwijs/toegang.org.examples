@@ -51,7 +51,7 @@ https://uitgever.nl/product-a#eyJhbGciOiJSUzI1NiIsImtpZCI6InpKYzVGYkFHelM2Ul9BOW
 ```
 Dit hash fragment komt niet direct op de `uitgever.nl` server aan; deze ziet alleen een `GET` request op `https://uitgever.nl/product-a`.
 De browser van de gebruiker ziet het hash fragment wel, en de pagina die geserveerd wordt op `https://uitgever.nl/product-a` kan het ook
-uitlezen met Javascript. Deze manier is dus vooral nutting voor (single-page) Javascript frontend applicaties. De applicatie gebruikt het
+uitlezen met Javascript. Deze manier is dus vooral nuttig voor (single-page) Javascript frontend applicaties. De applicatie gebruikt het
 token in de communicatie met zijn eigen backend als bewijs dat de gebruiker geautoriseerd is.
 
 ### (2b) JWS als POST body
@@ -88,7 +88,7 @@ Een voorbeeld-JWS om dit mee te testen is op `https://api-test.toegang.org/jwt/t
 De body van de response is een JSON-object waarvan het veld `payload` de informatie over de gebruiker bevat.
 
 ### (3b) Zelf de JWS verifiëren
-Om het JWS zelf te kunnen verifiëren is de publieke sleutel nodig. 
+Om het JWS zelf te kunnen verifiëren is de publieke sleutel van TOEGANG.ORG nodig. 
 Deze sleutel kan worden opgevraagd op het endpoint: `https://api.toegang.org/jwt/jwks`. 
 Op de test omgeving is dat `https://api-test.toegang.org/jwt/jwks`.  
 Het response-object is een JSON Web Key Set (JWKS), voor meer informatie zie de [specificatie](https://tools.ietf.org/html/rfc7517#page-25).
@@ -100,7 +100,7 @@ https://github.com/topicusonderwijs/toegang.org.examples/tree/master/examples/ph
 - Node.js  
 https://github.com/topicusonderwijs/toegang.org.examples/tree/master/examples/nodejs. 
 
-Zorg er in ieder geval voor dat de handtekening geverifieerd wordt, en dat de timestamp in het "exp" (expires)
+Zorg er in ieder geval voor dat de handtekening geverifieerd wordt, en dat de timestamp in het `exp` (expires)
 veld nog in de toekomst ligt.
 
 
@@ -148,9 +148,9 @@ Content-Type: application/json
 }
 ```
 
-In de request body staat een object met twee velden:
- 1. `jws` is het token wat zojuist ontvangen is;
- 2. `payload` wordt gevuld met de waarde van het `payload`-object van de geverifieerde JWS. Door dit veld
+De request body moet bestaan uit een JSON object met twee velden:
+ 1. `jws` bevat het token wat zojuist ontvangen is;
+ 2. `payload` bevat de waarde van het `payload`-object van de geverifieerde JWS. Door dit veld
     kan TOEGANG.ORG controleren dat het decoderen van het JWS gelukt is.
 
 Dit request geeft een lege response met een van de volgende statuscodes:
@@ -180,7 +180,31 @@ de omgeving van de uitgever.
 Met behulp van de TOEGANG.ORG licentie-API kunnen uitgevers licenties aanmaken; de met dat proces gegenereerde "T-Link"
 licentiecodes kunnen worden doorgegeven aan de eindgebruiken na bijvoorbeeld een aanschaf in een webshop. Om gebruik
 te kunnen maken van de API heeft u OAuth2 "client credentials" nodig en moet het betreffende product ingericht zijn
-bij TOEGANG.ORG, zoals hierboven besproken. De licentie-API draait op `https://api.toegang.org` (testomgeving: 
+bij TOEGANG.ORG, zoals hierboven besproken.
+
+Om de licentie-API aan te spreken heeft u eerst een tijdelijk Access Token nodig; dit is te verkrijgen door een
+OAuth2 client token request te doen op `https://idp.toegang.org/token` (test: `https://idp-test.toegang.org/token`).
+Hierbij moeten de OAuth2 client name en client secret, gescheiden door `:` en vervolgens URL-safe Base64-encoded, in
+de `Authorization` header meegegeven worden.
+
+```http request
+POST /token HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+Authorization: Basic Y2xpZW50LWlkOmNsaWVudC1zZWNyZXQ=
+
+grant_type=client_credentials
+```
+Het response hiervan
+```
+{
+    "access_token": "YmFkN2Y3ZmItOTUzZC00M2YyLWExNmUtYW...",
+    "expires_in": 3600,
+    "token_type": "Bearer"
+}
+```
+bevat het token dat toegang geeft tot de licentie-API.
+
+De licentie-API draait op `https://api.toegang.org` (testomgeving: 
 `https://api-test.toegang.org`). Het formaat van het request is:
 
 ```http request
@@ -188,7 +212,7 @@ POST /tlinklicenses/getLicenseCodes?productId=9789492000644&requestReferenceId=1
 Authorization: Bearer YmFkN2Y3ZmItOTUzZC00M2YyLWExNmUtYW...
 ```
 
-Het token in de `Authorization` header moet verkregen worden via de OAuth2 client credentials flow.
+Het token in de `Authorization` header is hetgene dat zojuist verkregen is via de OAuth2 client credentials flow.
 De verschillende parameters staan voor:
 
 parameter            | betekenis
@@ -214,3 +238,9 @@ Hier is `codes` het lijstje met nieuwe TLink-licentiecodes (zo veel als aangevra
 product als dat nog in de toekomst ligt, en anders de huidige datum. `endDate` is de einddatum van het product.
 
 Voor dit request bieden we voorbeeldimplementaties voor zowel PHP als NodeJS.
+
+## Postman voorbeelden
+
+Al bovenstaande requests zijn ook te testen met [Postman](https://www.getpostman.com). Importeer de
+[TOEGANG.ORG collection](examples/toegang.org.examples.postman_collection.json) en vul in de variables uw eigen
+`client-name` en `client-secret` in.
