@@ -11,10 +11,10 @@ $jws = $_POST['jws'];
 $authenticated_user = ToegangSso::validate($jws);
 
 if(isset($authenticated_user)){
-    echo "A user has succesfully authenticated: ";
-    foreach($authenticated_user as $prop){
-        echo "<br>".$prop;
-    }
+    echo "A user has succesfully authenticated: <br>";
+    echo "<pre>";
+    print_r($authenticated_user);
+    echo "</pre>";
 }
 else{
     echo "Error authenticating user, see log for more information.";

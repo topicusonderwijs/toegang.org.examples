@@ -9,7 +9,7 @@ Both ways are available in this demo application.
 
 ## Installation
 Requirements: PHP (>= 5.3) & php-curl (install via package manager of your choice)
-Make the /cache folder in the project writable for your webserver's user. (`chown -R www-data:www-data cache`)
+Make the /cache folder in the project writable for your webserver's user. (ie. for apache2 : `chown -R www-data:www-data cache` if you use another webserver, make sure the user that runs your service has write access to the cache folder)
 To install the small set of dependencies for this example application you need to run [Composer](https://getcomposer.org/):
 
 ```composer install```

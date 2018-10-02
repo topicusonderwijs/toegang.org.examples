@@ -65,7 +65,7 @@ class ToegangSso
                 // JWS has expired, redirect to original Tlink to build a new one
                 sleep(2);
                 error_log('WARNING: TOEGANG: JWS was expired for ' . $decoded_array['ref']);
-                self::Redirect($config['ui_base_uri'].$decoded_array['tlink'] );
+                self::Redirect($config['ui_base_uri']."/".$decoded_array['tlink'] );
             }
 
             //check if token is for the correct publisher
@@ -87,7 +87,7 @@ class ToegangSso
                 // values are the same, this link is re-used, so redirect to the original tlink
                 sleep(5);
                 error_log('WARNING: TOEGANG: rnd was reused from ' . $_SERVER['REMOTE_ADDR'] . ' code: ' . $decoded_array['ref']);
-                self::Redirect($config['ui_base_uri'] . $decoded_array['tlink'] );
+                self::Redirect($config['ui_base_uri']."/".$decoded_array['tlink'] );
             }
             else{
                 $c->store($rnd,$rnd,1000);
