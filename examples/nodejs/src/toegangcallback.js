@@ -17,19 +17,22 @@ module.exports = async function(req, res, next) {
             res.end();
             return;
         }
+        res.write('<head><meta charset="UTF-8"></head>');
+        res.write('<html><body>');
         /**
          * The payload will contain a 'rnd' property.
          * It is wise to validate if this value hasn't been used before by storing it in a cache/db.
          */
         console.log(payload);
-        res.write(`<html><body>Validation SUCCESS : ${JSON.stringify(payload)} <br/><br/>EXP = expiry, SUB = subject (account), ingelogde gebruiker, EAN = europese artikelnummering, AUD = audience, your publisher name. ORG (optional) = organisation of the subject account, FN (optional) = first name of the user account, LAC: linked accounts, historic account identifiers (merges) </body></html>`);
+        res.write(`Validation SUCCESS : ${JSON.stringify(payload)} <br/><br/>EXP = expiry, SUB = subject (account), ingelogde gebruiker, EAN = europese artikelnummering, AUD = audience, your publisher name. ORG (optional) = organisation of the subject account, FN (optional) = first name of the user account, LAC: linked accounts, historic account identifiers (merges)`);
         var callbackResult = await callback(payload, token);
         if(callbackResult === "OK"){
-            res.write('Callback done');
+            res.write('<br/><br/>Callback done');
         }
         else{
-            res.write('Callback failed: ' + callbackResult);
+            res.write('<br/><br/>Callback failed: ' + callbackResult);
         }
+        res.write('</body></html>');
         res.end();
     } catch (e) {
         res.write(String(e));
