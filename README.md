@@ -4,7 +4,7 @@ De manier waarop licenties voor elektronisch lesmateriaal in Nederland in het al
 een complex proces van identificatie en autorisatie van de eindgebruiker. TOEGANG.ORG ontzorgt de uitgever door dit proces
 technisch voor zijn rekening te nemen en waar nodig menselijk te ondersteunen. 
 
-Wanneer een uitgever gebruik wil maken van TOEGANG.ORG, dient de gebruiksomgeving van een uitgever aangesloten te worden
+Als een uitgever gebruik wil maken van TOEGANG.ORG, dient de gebruiksomgeving van een uitgever aangesloten te worden
 op de omgeving van TOEGANG.ORG. Wanneer dit geïmplementeerd is, functioneert TOEGANG.ORG als poortwachter die alleen
 gebruikers met een geldige licentie doorstuurt naar de gebruiksomgeving. De laatste hoeft dan alleen nog te controleren
 of de gebruiker een geldig toegangsbewijs van TOEGANG.ORG bezit. Deze pagina geeft hiervoor de technische specificaties, 
@@ -25,15 +25,15 @@ De stappen die aan de kant van de gebruiksomgeving genomen moeten worden staan h
 
 ## Stap 1. Maak een endpoint waarop TOEGANG.ORG-gebruikers binnen kunnen komen
 
-Als een gebruiker met een licentiecode (EAN of TLink) bij TOEGANG.ORG aankomt, bepalen wij zijn/haar identiteit en checken
-we de autorisatie voor die licensie. Klopt deze, dan sturen we de gebruiker door naar de URL die we voor u hebben geregistreerd bij
+Wanneer een gebruiker met een TLink-licentiecode of EAN bij TOEGANG.ORG aankomt, bepalen wij zijn/haar identiteit en checken
+we de autorisatie voor die licentie. Klopt deze, dan sturen we de gebruiker door naar de URL die we voor u hebben geregistreerd bij
 het betreffende product, bijvoorbeeld
 ```
 https://uitgever.nl/product-a
 ```
 Deze URL moeten opengezet worden in de gebruiksomgeving (voor gebruikers zonder sessie).
 
-## Stap 2. Lees het JWS token uit
+## Stap 2. Lees de JWS uit
 
 Wanneer we een gebruiker doorsturen
 naar deze URL sturen we altijd ook een JWS token ([JSON Web Signature](https://tools.ietf.org/html/rfc7515)) mee als "toegangsbewijs".
@@ -56,14 +56,14 @@ token in de communicatie met zijn eigen backend als bewijs dat de gebruiker geau
 
 ### (2b) JWS als POST body
 
-In dit geval instrueren we de browser van de gebruiker om een POST request te doen op `https://uitgever.nl/product-a` met het JWS
+In dit geval instrueren we de browser van de gebruiker om een POST request te doen op `https://uitgever.nl/product-a` met de JWS
 in de body.
 
-## Stap 3. Lees het JWS token uit en verifieer de handtekening
+## Stap 3. Decodeer het JWS en verifieer de handtekening
 
 Het JWS token is een door TOEGANG.ORG specifiek voor deze inlogactie gegenereerde string, die voor de gebruiksomgeving van de uitgever
 zowel dient ter indicatie van de identiteit van de gebruiker, als ter bewijs dat deze geautoriseerd is. De digitale handtekening
-in het JWS garandeert dat het token van TOEGANG.ORG afkomstig is. Het is van belang dat de uitgever dit ook *verifieert*;
+in de JWS garandeert dat het token van TOEGANG.ORG afkomstig is. Het is van belang dat de uitgever dit ook *verifieert*;
 zo niet, dan zou iedereen die de product-URL weet toegang kunnen krijgen tot het product.
 Het token kan op twee manieren worden geverifieerd:
 
@@ -83,17 +83,17 @@ Content-Type: application/json
   "jws": "eyJhbGciOiJSUzI1NiIsImtpZCI6InpKYzVGYkFHelM2Ul9BOWN1W..."
 }
 ```
-Een voorbeeld-JWS om dit mee te testen is op `https://api-test.toegang.org/jwt/testjwt` beschikbaar gesteld.
+Een voorbeeld-JWS om dit mee te testen wordt op `https://api-test.toegang.org/jwt/testjwt` beschikbaar gesteld.
 
 De body van de response is een JSON-object waarvan het veld `payload` de informatie over de gebruiker bevat.
 
 ### (3b) Zelf de JWS verifiëren
-Om het JWS zelf te kunnen verifiëren is de publieke sleutel van TOEGANG.ORG nodig. 
+Om de JWS zelf te kunnen verifiëren is de publieke sleutel van TOEGANG.ORG nodig. 
 Deze sleutel kan worden opgevraagd op het endpoint: `https://api.toegang.org/jwt/jwks`. 
 Op de test omgeving is dat `https://api-test.toegang.org/jwt/jwks`.  
 Het response-object is een JSON Web Key Set (JWKS), voor meer informatie zie de [specificatie](https://tools.ietf.org/html/rfc7517#page-25).
 
-Er zijn een aantal voorbeeld applicaties gemaakt waarin is uitgewerkt hoe de JWS kan worden geverifieerd. 
+Er zijn een aantal voorbeeld applicaties gemaakt waarin is uitgewerkt hoe de JWS kan worden gedecodeerd en geverifieerd. 
 Er zijn voorbeeld applicaties in de volgende talen:
 - PHP  
 https://github.com/topicusonderwijs/toegang.org.examples/tree/master/examples/php;
@@ -104,7 +104,7 @@ Zorg er in ieder geval voor dat de handtekening geverifieerd wordt, en dat de ti
 veld nog in de toekomst ligt.
 
 
-## Stap 4. Lees de informatie uit het JWS uit
+## Stap 4. Verwerk informatie uit de JWS
 
 De payload van de geverifieerde JWS bevat de volgende velden:
 
@@ -122,7 +122,10 @@ ref     | Ja        | De meldcode voor de helpdesk om de gebruiker te kunnen vol
 lac     | Nee       | Linked accounts; historische identifiers van deze gebruiker door bijvoorbeeld een fusie of account merge
 rol	    | Nee	    | Rol van de ingelogde gebruiker (eduPersonAffiliation)
 
-Op basis van deze gegevens zou de uitgever de gebruiker in moeten kunnen loggen. LET OP: omdat TOEGANG.ORG niet bij alle
+Op basis van deze gegevens zou de uitgever de gebruiker in moeten kunnen loggen.
+Log de gebruiker in voor het product wat in het `ean` veld staat.
+
+**LET OP**: omdat TOEGANG.ORG niet bij alle
 inlogflows een sterke garantie kan geven m.b.t. de identiteit van de gebruiker is het niet aan te raden om persoonlijke
 gegevens te koppelen aan de gebruiker. Voor de toekomst staat wel functionaliteit gepland waarmee de uitgever een
 sterkere authenticatie af kan dwingen.
@@ -151,7 +154,7 @@ Content-Type: application/json
 De request body moet bestaan uit een JSON object met twee velden:
  1. `jws` bevat het token wat zojuist ontvangen is;
  2. `payload` bevat de waarde van het `payload`-object van de geverifieerde JWS. Door dit veld
-    kan TOEGANG.ORG controleren dat het decoderen van het JWS gelukt is.
+    kan TOEGANG.ORG controleren dat het decoderen van de JWS gelukt is.
 
 Dit request geeft een lege response met een van de volgende statuscodes:
 
@@ -208,7 +211,7 @@ De licentie-API draait op `https://api.toegang.org` (testomgeving:
 `https://api-test.toegang.org`). Het formaat van het request is:
 
 ```http request
-POST /tlinklicenses/getLicenseCodes?productId=9789492000644&requestReferenceId=123123546789&amount=50&distributorId=Leerhuys HTTP/1.1
+POST /tlinklicenses/getLicenseCodes?productId=9789999999664&requestReferenceId=123&amount=50&distributorId=Edubert HTTP/1.1
 Authorization: Bearer YmFkN2Y3ZmItOTUzZC00M2YyLWExNmUtYW...
 ```
 

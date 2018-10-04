@@ -1,9 +1,10 @@
-const validator = require('./validator')
+const validator = require('./validator');
 const callback = require('./callback');
+const config = require('./config');
 
 /**
- * This function checks the token and validates
- * if this is a signed token by toegang.org so you can login this specific user.
+ * This POST endpoint expects a JWS token, based on which it will, or will not, login the user.
+ * This depends on the validity of the signature and the payload of the JWS.
  */
 module.exports = async function(req, res, next) {
     console.log(req.body.token);
@@ -11,21 +12,34 @@ module.exports = async function(req, res, next) {
     console.log(`Token found : ${token}`);
 
     try {
-        const payload = await validator.verify(token, /* Use your publisher name here to check if this token is meant for you*/"UitgeverX");
+        /*
+         * (Step 3b) verify signature, audience and expiry date of JWs.
+         */
+        const payload = await validator.verify(token, config.uitgever_naam);
         if (!payload) {
             res.write(JSON.parse('{"error": "Token invalid!"}'));
             res.end();
             return;
         }
+        /*
+         * The payload will contain a 'rnd' property.
+         * It is also wise to validate if this value hasn't been used before by storing it in a cache/db.
+         */
+
         res.write('<head><meta charset="UTF-8"></head>');
         res.write('<html><body>');
-        /**
-         * The payload will contain a 'rnd' property.
-         * It is wise to validate if this value hasn't been used before by storing it in a cache/db.
-         */
         console.log(payload);
         res.write(`Validation SUCCESS : ${JSON.stringify(payload)} <br/><br/>EXP = expiry, SUB = subject (account), ingelogde gebruiker, EAN = europese artikelnummering, AUD = audience, your publisher name. ORG (optional) = organisation of the subject account, FN (optional) = first name of the user account, LAC: linked accounts, historic account identifiers (merges)`);
+
+        /*
+         * (Step 4) in your real application, at this point you can authorize the user to access the product mentioned in the EAN field.
+         */
+
+        /*
+         * (Step 5) callback to TOEGANG.ORG to let them know the user has logged in successfully.
+         */
         var callbackResult = await callback(payload, token);
+
         if(callbackResult === "OK"){
             res.write('<br/><br/>Callback done');
         }
