@@ -181,7 +181,7 @@ de omgeving van de uitgever.
 ## Aanmaken van licenties
 
 Met behulp van de TOEGANG.ORG licentie-API kunnen uitgevers licenties aanmaken; de met dat proces gegenereerde "T-Link"
-licentiecodes kunnen worden doorgegeven aan de eindgebruiken na bijvoorbeeld een aanschaf in een webshop. Om gebruik
+licentiecodes kunnen worden doorgegeven aan de eindgebruiker na bijvoorbeeld een aanschaf in een webshop. Om gebruik
 te kunnen maken van de API heeft u OAuth2 "client credentials" nodig en moet het betreffende product ingericht zijn
 bij TOEGANG.ORG, zoals hierboven besproken.
 
