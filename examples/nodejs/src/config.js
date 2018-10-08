@@ -2,6 +2,7 @@ const IDP_BASE_URI = 'https://idp-test.toegang.org';
 const API_BASE_URI = 'https://api-test.toegang.org';
 
 module.exports = {
+    uitgever_naam: 'Naam van uitgever',
     oauth_client_id: 'test',
     oauth_client_secret: 'test',
     oauth_token_uri: IDP_BASE_URI + '/token',

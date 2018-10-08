@@ -1,15 +1,17 @@
 <html>
 <body>
-<form method="post" action="toegangcallback.php">
-    <label for="jwt">JWS: </label><input id="tokenholder" type="text" name="jws"/>
-    <input type="submit" value="Validate"/>
-</form>
-or
-<a href="license.php">Create licenses</a>
-<script>
-    if (window.location.hash) {
-        document.getElementById('tokenholder').value = window.location.hash.substr(1);
-    }
-</script>
+    Test product page with JWS in hash:<br/>
+    <form>
+        <tt>/product-a #</tt>
+        <input id="tokenholder" type="text" name="token" placeholder="Paste JWS here"><br/>
+        <input type="button" value="Go" onclick="go()">
+    </form>
+    or
+    <a href="/create-licenses.php">Create some licenses</a>
+    <script>
+        function go() {
+            window.location = '/product-a.php#' + document.getElementById('tokenholder').value;
+        }
+    </script>
 </body>
 </html>

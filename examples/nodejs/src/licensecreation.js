@@ -20,7 +20,7 @@ const _createLicenseProperties = function(productEan, uitgeverId, aantal){
 };
 
 /**
- * In a reallife situation this function would be behind an authenticated rest resource!
+ * In a real application this endpoint would require administrator permissions!
  * Do not use as-is, for demonstration purposes only.
  */
 module.exports = async function(req, res) {
@@ -32,7 +32,7 @@ module.exports = async function(req, res) {
         return;
     }
     const aantalLicenties = 12;
-    const licenseObject = _createLicenseProperties('1111111111111', 'UitgeverId', aantalLicenties) ;
+    const licenseObject = _createLicenseProperties('9789999999664', config.uitgever_naam, aantalLicenties) ;
     const toegangClient = new RestClient();
     const args = {
         headers: {

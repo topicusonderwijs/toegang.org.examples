@@ -19,7 +19,7 @@ return array(
     'idp_base_uri' => $idp_base_uri,
     'api_base_uri' => $api_base_uri,
     'ui_base_uri' => $ui_base_uri,
-    'uitgever_naam' => 'Uitgever X',
+    'uitgever_naam' => 'Naam van uitgever',
     'oauth_client_id' => 'YOUR_OAUTH_CLIENT_ID',
     'oauth_client_secret' => 'YOUR_OAUTH_CLIENT_SECRET',
     'oauth_token_uri' => $idp_base_uri.'/token',

@@ -1,2 +1,5 @@
 **/.idea
 **/vendor/
+**/cache/
+**/node_modules/
+**/package-lock.json

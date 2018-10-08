@@ -1,8 +1,8 @@
-## Toegang.org nodejs key validation example ##
+## TOEGANG.ORG Node.js key validation example ##
 
-This repository includes a very basic nodejs application that can validate keys received from the toegang-org callback service.
+This repository includes a very basic Node.js application that can validate keys received from the toegang.org service.
 There are two ways of validating the logged in user:
-* Validate the token (JWT) signed by toegang.org
+* Validate the token (JWS) signed by toegang.org
 * Do an async call to our callback api to validate the token
 Both ways are available in this demo application.
 

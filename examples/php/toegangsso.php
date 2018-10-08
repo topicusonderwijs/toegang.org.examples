@@ -70,7 +70,7 @@ class ToegangSso
 
             //check if token is for the correct publisher
             if (isset($config['uitgever_naam'])) {
-                if (!$decoded_array['aud'] == $config['uitgever_naam']) {
+                if (!($decoded_array['aud'] == $config['uitgever_naam'])) {
                     // 'publisherID doesn match. Probably configuration fault.
                     error_log('ERROR: TOEGANG: PublisherID mismatch ' . $decoded_array['aud'] . ' code: ' . $decoded_array['ref']);
                     self::Redirect ($config['ui_base_uri'] . '/code');
