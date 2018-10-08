@@ -4,10 +4,13 @@ require_once 'vendor/autoload.php';
 require_once 'toegangsso.php';
 
 /**
- * Get the posted JWT
+ * Get the posted JWS
  */
 $jws = $_POST['jws'];
 
+/**
+ * (Step 3a + 5) validate JWS and perform callback
+ */
 $authenticated_user = ToegangSso::validate($jws);
 
 if(isset($authenticated_user)){
