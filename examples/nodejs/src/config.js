@@ -3,6 +3,7 @@ const API_BASE_URI = 'https://api-test.toegang.org';
 
 module.exports = {
     uitgever_naam: 'Naam van uitgever',
+    uitgever_uuid: '88d6eae3-4dcd-414b-a0b7-b66081bb07b9',
     oauth_client_id: 'test',
     oauth_client_secret: 'test',
     oauth_token_uri: IDP_BASE_URI + '/token',

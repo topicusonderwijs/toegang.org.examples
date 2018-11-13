@@ -117,7 +117,7 @@ sub     | Ja        | Id van de account die uniek is voor de uitgever
 exp     | Ja        | Timestamp van het tijdstip tot wanneer de JWS geldig is (milliseconden sinds Unix epoch).
 tlink   | Ja        | De TLink-code van de licentie.
 ean     | Ja        | De EAN van het product.
-aud     | Ja        | De naam van de organisatie van de uitgever
+aud     | Ja        | De unieke identifier van de organisatie van de uitgever
 ref     | Ja        | De meldcode voor de helpdesk om de gebruiker te kunnen volgen door het proces.
 lac     | Nee       | Linked accounts; historische identifiers van deze gebruiker door bijvoorbeeld een fusie of account merge
 rol	    | Nee	    | Rol van de ingelogde gebruiker (eduPersonAffiliation)

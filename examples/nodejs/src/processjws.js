@@ -15,7 +15,7 @@ module.exports = async function(req, res, next) {
         /*
          * (Step 3b) verify signature, audience and expiry date of JWs.
          */
-        const payload = await validator.verify(token, config.uitgever_naam);
+        const payload = await validator.verify(token, config.uitgever_uuid);
         if (!payload) {
             res.write(JSON.parse('{"error": "Token invalid!"}'));
             res.end();
