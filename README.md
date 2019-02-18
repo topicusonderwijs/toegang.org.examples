@@ -121,6 +121,7 @@ aud     | Ja        | De unieke identifier van de organisatie van de uitgever
 ref     | Ja        | De meldcode voor de helpdesk om de gebruiker te kunnen volgen door het proces.
 lac     | Nee       | Linked accounts; historische identifiers van deze gebruiker door bijvoorbeeld een fusie of account merge
 rol	    | Nee	    | Rol van de ingelogde gebruiker (eduPersonAffiliation)
+extids  | Nee       | De unieke identifier van een gebruiker bij andere uitgevers (alleen gevuld wanneer er sublicenties worden gebruikt)
 
 Op basis van deze gegevens zou de uitgever de gebruiker in moeten kunnen loggen.
 Log de gebruiker in voor het product wat in het `ean` veld staat.

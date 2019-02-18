@@ -29,7 +29,7 @@ module.exports = async function(req, res, next) {
         res.write('<head><meta charset="UTF-8"></head>');
         res.write('<html><body>');
         console.log(payload);
-        res.write(`Validation SUCCESS : ${JSON.stringify(payload)} <br/><br/>EXP = expiry, SUB = subject (account), ingelogde gebruiker, EAN = europese artikelnummering, AUD = audience, your publisher name. ORG (optional) = organisation of the subject account, FN (optional) = first name of the user account, LAC: linked accounts, historic account identifiers (merges)`);
+        res.write(`Validation SUCCESS : ${JSON.stringify(payload)} <br/><br/> For an explanation about the content of the jwt see https://github.com/topicusonderwijs/toegang.org.examples/blob/master/README.md`);
 
         /*
          * (Step 4) in your real application, at this point you can authorize the user to access the product mentioned in the EAN field.
