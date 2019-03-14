@@ -31,13 +31,13 @@ module.exports = async function(req, res) {
         res.end();
         return;
     }
-    const aantalLicenties = 12;
+    const  aantalLicenties = 12;
     const licenseObject = _createLicenseProperties('9789999999664', config.uitgever_naam, aantalLicenties) ;
     const toegangClient = new RestClient();
     const args = {
         headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + accessToken.token.access_token
+                "Authorization": "Bearer " + accessToken.token.access_token
         },
         parameters: licenseObject
     };
