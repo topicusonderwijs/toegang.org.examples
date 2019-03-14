@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Toegang</title>
+    <link href='https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:regular,bold' rel='stylesheet'
+          type='text/css'/>
+    <!--<link rel="stylesheet" href="homepage.css" type="text/css" media="screen" title="Stylesheet"/>-->
+</head>
+<body>
+
+<div class="container">
+    <div id="result-container">
+        <div id="validation-result-text-box">
+            <div wicket:id="validationResultBox">
+                <p wicket:id="validationResult"></p>
+            </div>
+            <div>
+                <p>Server response: <span wicket:id="responseInfoText"></span></p>
+            </div>
+        </div>
+        <div id="result-box">
+            <div>
+                <b>Organisatie</b>
+                <p wicket:id="org"></p>
+            </div>
+            <div>
+                <b>First name</b>
+                <p wicket:id="fn"></p>
+            </div>
+            <div>
+                <b>Subject</b>
+                <p wicket:id="sub"></p>
+            </div>
+            <div>
+                <b>Expiration date</b>
+                <p wicket:id="exp"></p>
+            </div>
+            <div>
+                <b>T-link</b>
+                <p wicket:id="tlink"></p>
+            </div>
+            <div>
+                <b>EAN</b>
+                <p wicket:id="ean"></p>
+            </div>
+            <div>
+                <b>Audience</b>
+                <p wicket:id="aud"></p>
+            </div>
+            <div>
+                <b>REF</b>
+                <p wicket:id="ref"></p>
+            </div>
+            <div>
+                <b>RND</b>
+                <p wicket:id="rnd"></p>
+            </div>
+            <div>
+                <b>Role</b>
+                <p wicket:id="rol"></p>
+            </div>
+            <div>
+                <b>LAC</b>
+                <p wicket:id="lacList">
+                    <span wicket:id="lacItem"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="token-form">
+        <form wicket:id="tokenForm">
+            <p>Enter your JWS token:</p>
+            <textarea placeholder="JWT Token" wicket:id="tokenField" cols="200" rows="10"></textarea>
+            <div id="form-button-box">
+                <a wicket:id="clearTokenField">Clear field</a>
+                <input type="submit" wicket:id="submitToken" style="margin-top: 10px"/>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
