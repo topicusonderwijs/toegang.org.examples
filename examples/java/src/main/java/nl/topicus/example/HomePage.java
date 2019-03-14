@@ -4,9 +4,9 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.topicus.example.client.ToegangOrg;
-import nl.topicus.example.domein.Payload;
 import nl.topicus.example.exception.JwsConversionException;
-import nl.topicus.example.security.JwtConstants;
+import nl.topicus.example.model.JwsPayload;
+import nl.topicus.example.security.constants;
 import org.apache.wicket.behavior.AbstractAjaxBehavior;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.head.CssHeaderItem;
@@ -47,7 +47,7 @@ public class HomePage extends WebPage {
     private static final long serialVersionUID = 1L;
 
     private long JwsExpInMs = 0;
-    private Payload payload = new Payload();
+    private JwsPayload payload = new JwsPayload();
 
     private Model<String> inputModel = new Model<>("");
     private Model<String> responseTextModel = new Model<>("");
@@ -68,8 +68,14 @@ public class HomePage extends WebPage {
         add(responseInfoText);
 
         ListView<String> lacList = initializeJwsDetails();
-
         add(lacList);
+
+        // json object wordt gemaakt voor de request
+//        try {
+//            System.out.println(new ObjectMapper().writeValueAsString(new LicenseRequestModel("application/json", "Bearer", "This is the token", new LicenseModel("productId", "distributorId", 200, "requestReferenceId"))));
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//        }
 
         Form<String> tokenForm = initializeTokenForm(lacList);
 
@@ -95,7 +101,7 @@ public class HomePage extends WebPage {
                 String token = inputModel.getObject();
                 try {
                     String jsonJws = HomePage.this.validateJws(token, "Naam van uitgever");
-                    payload = new ObjectMapper().readValue(jsonJws, Payload.class);
+                    payload = new ObjectMapper().readValue(jsonJws, JwsPayload.class);
                     setValidBoxColor(true);
                     validationResultModel.setObject("Token is valid");
                     setJwsDetails(payload, models, lacList);
@@ -170,7 +176,7 @@ public class HomePage extends WebPage {
         return lacList;
     }
 
-    private void setJwsDetails(Payload payload, List<Model<String>> models, ListView<String> lacList) {
+    private void setJwsDetails(JwsPayload payload, List<Model<String>> models, ListView<String> lacList) {
         for (int i = 0; i < payload.getValues().size(); i++) {
             if (i == 3) {
                 Calendar c = Calendar.getInstance();
@@ -184,7 +190,7 @@ public class HomePage extends WebPage {
         lacList.setList(payload.getLac());
     }
 
-    private void resetJwsDetails(Payload payload, List<Model<String>> models, ListView<String> lacList) {
+    private void resetJwsDetails(JwsPayload payload, List<Model<String>> models, ListView<String> lacList) {
         for (int i = 0; i < payload.getValues().size(); i++) {
             models.get(i).setObject(" ");
         }
@@ -195,7 +201,7 @@ public class HomePage extends WebPage {
 
     private String validateJws(String token, String publisherName) throws JwsConversionException {
         try {
-            byte[] data = Base64.getDecoder().decode((JwtConstants.PUBLIC_KEY.getBytes()));
+            byte[] data = Base64.getDecoder().decode((constants.PUBLIC_KEY.getBytes()));
             X509EncodedKeySpec spec = new X509EncodedKeySpec(data);
             KeyFactory fact = KeyFactory.getInstance("RSA");
             PublicKey key = fact.generatePublic(spec);
