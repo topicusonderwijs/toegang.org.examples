@@ -3,17 +3,17 @@
    Licensed to the Apache Software Foundation (ASF) under one or more
    contributor license agreements.  See the NOTICE file distributed with
    this work for additional information regarding copyright ownership.
-   The ASF licenses this file to You under the Apache LicenseModel, Version 2.0
-   (the "LicenseModel"); you may not use this file except in compliance with
-   the LicenseModel.  You may obtain a copy of the LicenseModel at
+   The ASF licenses this file to You under the Apache LicenseInformation, Version 2.0
+   (the "LicenseInformation"); you may not use this file except in compliance with
+   the LicenseInformation.  You may obtain a copy of the LicenseInformation at
 
         http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
-   distributed under the LicenseModel is distributed on an "AS IS" BASIS,
+   distributed under the LicenseInformation is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the LicenseModel for the specific language governing permissions and
-   limitations under the LicenseModel.
+   See the LicenseInformation for the specific language governing permissions and
+   limitations under the LicenseInformation.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

@@ -2,8 +2,8 @@ package nl.topicus.example.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import nl.topicus.example.controller.Callback;
-import nl.topicus.example.model.request.CallbackRequestModel;
+import nl.topicus.example.controller.Toegang;
+import nl.topicus.example.model.request.JwsPayloadRequest;
 import nl.topicus.example.model.JwsPayload;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
@@ -19,13 +19,17 @@ public class ToegangOrg {
 
     private ToegangOrg() { }
 
-    public synchronized static Response sendPayload(JwsPayload payload, String jws) {
+    public static ToegangOrg getInstance(){
+        return new ToegangOrg();
+    }
+
+    public synchronized Response sendPayloadAndToken(JwsPayload payload, String jws) {
 
         try {
             ResteasyClient client = new ResteasyClientBuilder().build();
             ResteasyWebTarget target = client.target(UriBuilder.fromPath(PATH));
-            Callback proxy = target.proxy(Callback.class);
-            String callbackRequest = new ObjectMapper().writeValueAsString(new CallbackRequestModel(jws, payload));
+            Toegang proxy = target.proxy(Toegang.class);
+            String callbackRequest = new ObjectMapper().writeValueAsString(new JwsPayloadRequest(jws, payload));
             Response callbackResponse = proxy.postCallback(callbackRequest);
             callbackResponse.close();
 

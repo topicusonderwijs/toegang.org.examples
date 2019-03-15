@@ -1,16 +1,16 @@
 package nl.topicus.example.model.request;
 
-import nl.topicus.example.model.LicenseModel;
+import nl.topicus.example.model.LicenseInformation;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class LicenseRequestModel {
+public class LicenseRequest {
 
     private Map<String,String> headers;
-    private LicenseModel parameters;
+    private LicenseInformation parameters;
 
-    public LicenseRequestModel(String contentType, String authType, String token, LicenseModel parameters) {
+    public LicenseRequest(String contentType, String authType, String token, LicenseInformation parameters) {
         headers = new HashMap<>();
         headers.put("Content-Type", contentType);
         headers.put("Authorization", authType  +" " + token);
@@ -21,7 +21,7 @@ public class LicenseRequestModel {
         return headers;
     }
 
-    public LicenseModel getParameters() {
+    public LicenseInformation getParameters() {
         return parameters;
     }
 }

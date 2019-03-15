@@ -1,13 +1,13 @@
 package nl.topicus.example.model;
 
-public class LicenseModel {
+public class LicenseInformation {
 
     private String productId;
     private String distributorId;
     private long aantalLicenties;
     private String requestReferenceId;
 
-    public LicenseModel(String productId, String distributorId, long aantalLicenties, String requestReferenceId) {
+    public LicenseInformation(String productId, String distributorId, long aantalLicenties, String requestReferenceId) {
         this.productId = productId;
         this.distributorId = distributorId;
         this.aantalLicenties = aantalLicenties;

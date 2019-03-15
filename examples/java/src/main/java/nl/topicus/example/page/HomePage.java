@@ -1,12 +1,11 @@
-package nl.topicus.example;
+package nl.topicus.example.page;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.topicus.example.client.ToegangOrg;
 import nl.topicus.example.exception.JwsConversionException;
 import nl.topicus.example.model.JwsPayload;
-import nl.topicus.example.security.constants;
+import nl.topicus.example.security.helper.JwsHelper;
 import org.apache.wicket.behavior.AbstractAjaxBehavior;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.head.CssHeaderItem;
@@ -23,42 +22,25 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.PackageResourceReference;
-import org.jose4j.jwa.AlgorithmConstraints;
-import org.jose4j.jws.AlgorithmIdentifiers;
-import org.jose4j.jwt.JwtClaims;
-import org.jose4j.jwt.MalformedClaimException;
-import org.jose4j.jwt.NumericDate;
-import org.jose4j.jwt.consumer.ErrorCodes;
-import org.jose4j.jwt.consumer.InvalidJwtException;
-import org.jose4j.jwt.consumer.JwtConsumer;
-import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 
 import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
-import java.security.PublicKey;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.X509EncodedKeySpec;
 import java.util.*;
 
 public class HomePage extends WebPage {
 
     private static final long serialVersionUID = 1L;
 
-    private long JwsExpInMs = 0;
-    private JwsPayload payload = new JwsPayload();
-
     private Model<String> inputModel = new Model<>("");
     private Model<String> responseTextModel = new Model<>("");
     private Model<String> validationResultModel = new Model<>("");
     private Model<String> validationResultBoxModel = new Model<>("");
 
-    private WebMarkupContainer validationBox = new WebMarkupContainer("validationResultBox", validationResultBoxModel);
     private Label responseInfoText = new Label("responseInfoText", responseTextModel);
+    private WebMarkupContainer validationBox = new WebMarkupContainer("validationResultBox", validationResultBoxModel);
 
-    private List<String> values = new ArrayList<>(Arrays.asList("org", "fn", "sub", "exp", "tlink", "ean", "aud", "ref", "rnd", "rol"));
-    private List<Model<String>> models = new ArrayList<>(Arrays.asList(new Model<>(""), new Model<>(""), new Model<>(""), new Model<>(""), new Model<>(""), new Model<>(""), new Model<>(""), new Model<>(""), new Model<>(""), new Model<>("")));
+    private List<String> JwsDetailValues = new ArrayList<>(Arrays.asList("org", "fn", "sub", "exp", "tlink", "ean", "aud", "ref", "rnd", "rol"));
+    private List<Model<String>> JwsDetailModels = new ArrayList<>(Arrays.asList(new Model<>(""), new Model<>(""), new Model<>(""), new Model<>(""), new Model<>(""), new Model<>(""), new Model<>(""), new Model<>(""), new Model<>(""), new Model<>("")));
 
 
     public HomePage(final PageParameters parameters) {
@@ -72,7 +54,7 @@ public class HomePage extends WebPage {
 
         // json object wordt gemaakt voor de request
 //        try {
-//            System.out.println(new ObjectMapper().writeValueAsString(new LicenseRequestModel("application/json", "Bearer", "This is the token", new LicenseModel("productId", "distributorId", 200, "requestReferenceId"))));
+//            System.out.println(new ObjectMapper().writeValueAsString(new LicenseRequest("application/json", "Bearer", "This is the token", new LicenseInformation("productId", "distributorId", 200, "requestReferenceId"))));
 //        } catch (JsonProcessingException e) {
 //            e.printStackTrace();
 //        }
@@ -93,6 +75,12 @@ public class HomePage extends WebPage {
         });
     }
 
+    /**
+     * Fabriceert een form met daarin zijn onclick logica
+     *
+     * @param lacList wordt gebruikt om de lijst aan te passen naar wens
+     * @return de form dat wordt aangemaakt
+     */
     private Form<String> initializeTokenForm(ListView<String> lacList) {
         return new Form<String>("tokenForm") {
 
@@ -100,23 +88,37 @@ public class HomePage extends WebPage {
             protected void onSubmit() {
                 String token = inputModel.getObject();
                 try {
-                    String jsonJws = HomePage.this.validateJws(token, "Naam van uitgever");
-                    payload = new ObjectMapper().readValue(jsonJws, JwsPayload.class);
-                    setValidBoxColor(true);
+                    /*
+                     * 1. De token wordt getoetst en de payload wordt terug gegeven, als die valide is, in json formaat
+                     * 2. Zet alles wat in de jsonJws variabele zit, in een java object genaamd: 'JwsPayload'
+                     * 3. Wijst de validatie doos de juiste kleur toe. Als je true meegeeft dan wordt die groen en rood als false meegeeft
+                     * 5. Geeft alle modellen de juiste waardes. Deze worden allemaal uit de JwsPayload instantie gehaald
+                     */
+                    String jsonJws = JwsHelper.validateJws(token, "Naam van uitgever");
+                    JwsHelper.createJwsPayload(jsonJws);
+                    tokenIsValid(true);
                     validationResultModel.setObject("Token is valid");
-                    setJwsDetails(payload, models, lacList);
+                    setJwsDetails(JwsHelper.getJwsPayload(), JwsDetailModels, lacList);
 
                 } catch (JwsConversionException | JsonParseException | JsonMappingException re) {
-                    setValidBoxColor(false);
+                    /*
+                     * 3. reset alle waardes die in de modellen zitten
+                     */
+                    tokenIsValid(false);
                     validationResultModel.setObject(re.getMessage());
-                    resetJwsDetails(payload, models, lacList);
+                    resetJwsDetails(lacList);
 
                 } catch (IOException io) {
-                    setValidBoxColor(false);
+                    tokenIsValid(false);
                     validationResultModel.setObject(io.getMessage());
-                    resetJwsDetails(payload, models, lacList);
+                    resetJwsDetails(lacList);
                 } finally {
-                    Response response = ToegangOrg.sendPayload(payload, token);
+                    /*
+                     * 1. Stuurt de JwsPayload instantie en de JWS token naar de toegang.org/callback endpoint
+                     * 2. De response status krijgt een kleur op basis van de status
+                     * 3. Zet de response status in het model, zodat het aan de voorkant getoond wordt
+                     */
+                    Response response = ToegangOrg.getInstance().sendPayloadAndToken(JwsHelper.getJwsPayload(), token);
                     setResponseColor(response.getStatus());
                     responseTextModel.setObject(""+response.getStatus());
                 }
@@ -124,7 +126,12 @@ public class HomePage extends WebPage {
         };
     }
 
-    private void setValidBoxColor(boolean valid) {
+    /**
+     * Wijst de kleur toe aan de achtergrond van de validatie doos
+     *
+     * @param valid als dit true is dan wordt die groen en rood als die false is
+     */
+    private void tokenIsValid(boolean valid) {
         this.validationBox.add(new AbstractAjaxBehavior() {
             @Override
             public void onRequest() {
@@ -142,6 +149,11 @@ public class HomePage extends WebPage {
         });
     }
 
+    /**
+     * Een kleur wordt op basis van de status code aan de status text toegekend
+     *
+     * @param responseStatus op basis hiervan wordt de kleur toegekend
+     */
     private void setResponseColor(int responseStatus) {
         this.responseInfoText.add(new AbstractAjaxBehavior() {
             @Override
@@ -160,27 +172,39 @@ public class HomePage extends WebPage {
         });
     }
 
+    /**
+     * Zorgt ervoor dat alle velden, die aan de voorkant te zien zijn, worden toegekend aan een model
+     *
+     * @return een listview dat correct is ingesteld met alle LAC items
+     */
     private ListView<String> initializeJwsDetails() {
-
-        ListView<String> lacList = new ListView<String>("lacList", this.payload.getLac()) {
+        ListView<String> lacList = new ListView<String>("lacList", JwsHelper.getJwsPayload().getLac()) {
             @Override
             protected void populateItem(ListItem<String> item) {
                 item.add(new Label("lacItem", item.getDefaultModelObjectAsString()));
             }
         };
 
-        for (int i = 0; i < this.values.size(); i++) {
-            add(new Label(this.values.get(i), this.models.get(i)));
+        for (int i = 0; i < this.JwsDetailValues.size(); i++) {
+            add(new Label(this.JwsDetailValues.get(i), this.JwsDetailModels.get(i)));
         }
 
         return lacList;
     }
 
+    /**
+     * Vult alle velden in, die aan de voorkant te zien zijn
+     * Zet het vervaldatum van de jws token om naar een leesbare datum
+     *
+     * @param payload hier haalt die alle informatie uit
+     * @param models hier zet die alle informatie in
+     * @param lacList hierin komen de items in de LAC lijst
+     */
     private void setJwsDetails(JwsPayload payload, List<Model<String>> models, ListView<String> lacList) {
         for (int i = 0; i < payload.getValues().size(); i++) {
             if (i == 3) {
                 Calendar c = Calendar.getInstance();
-                c.setTimeInMillis(this.JwsExpInMs);
+                c.setTimeInMillis(JwsHelper.getExpirationInMs() / 1000);
                 models.get(i).setObject("" + c.getTime());
             } else {
                 models.get(i).setObject(payload.getValues().get(i));
@@ -190,56 +214,13 @@ public class HomePage extends WebPage {
         lacList.setList(payload.getLac());
     }
 
-    private void resetJwsDetails(JwsPayload payload, List<Model<String>> models, ListView<String> lacList) {
-        for (int i = 0; i < payload.getValues().size(); i++) {
-            models.get(i).setObject(" ");
+
+    private void resetJwsDetails(ListView<String> lacList) {
+        for (int i = 0; i < this.JwsDetailModels.size(); i++) {
+            this.JwsDetailModels.get(i).setObject(" ");
         }
 
         lacList.setList(new ArrayList<>());
-    }
-
-
-    private String validateJws(String token, String publisherName) throws JwsConversionException {
-        try {
-            byte[] data = Base64.getDecoder().decode((constants.PUBLIC_KEY.getBytes()));
-            X509EncodedKeySpec spec = new X509EncodedKeySpec(data);
-            KeyFactory fact = KeyFactory.getInstance("RSA");
-            PublicKey key = fact.generatePublic(spec);
-
-            JwtConsumer jwtConsumer = new JwtConsumerBuilder()
-                    .setAllowedClockSkewInSeconds(30)
-                    .setRequireSubject()
-                    .setExpectedAudience(publisherName)
-                    .setVerificationKey(key)
-                    .setJwsAlgorithmConstraints(
-                            new AlgorithmConstraints(AlgorithmConstraints.ConstraintType.WHITELIST,
-                                    AlgorithmIdentifiers.RSA_USING_SHA256))
-                    .build();
-
-            JwtClaims jwtClaims = jwtConsumer.processToClaims(token);
-
-            extractExpToMs(jwtClaims);
-
-            if (NumericDate.now().isOnOrAfter(NumericDate.fromMilliseconds(this.JwsExpInMs))) {
-                throw new JwsConversionException("JWS token has expired");
-            }
-
-            return jwtClaims.toJson();
-
-        } catch (InvalidJwtException e) {
-            if (e.hasErrorCode(ErrorCodes.AUDIENCE_INVALID)) {
-                throw new JwsConversionException("JWS token contains the wrong audience");
-            }
-
-        } catch (MalformedClaimException | NoSuchAlgorithmException | InvalidKeySpecException multiE) {
-            multiE.printStackTrace();
-        }
-
-        throw new JwsConversionException("Invalid token value");
-    }
-
-    private void extractExpToMs(JwtClaims jwtClaims) throws MalformedClaimException {
-        this.JwsExpInMs = jwtClaims.getExpirationTime().getValueInMillis() / 1000;
     }
 
     @Override

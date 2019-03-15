@@ -6,10 +6,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("/callback")
-public interface Callback {
+public interface Toegang {
 
     @POST
+    @Path("/callback")
     @Consumes(MediaType.APPLICATION_JSON)
     Response postCallback(String req);
 }

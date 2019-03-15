@@ -1,4 +1,4 @@
-package nl.topicus.example.security;
+package nl.topicus.example.security.helper;
 
 import com.nimbusds.oauth2.sdk.*;
 import com.nimbusds.oauth2.sdk.auth.ClientAuthentication;
