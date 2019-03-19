@@ -1,16 +1,16 @@
-package nl.topicus.example.model;
+package nl.topicus.example.model.request;
 
-public class LicenseModel {
+public class LicenseBodyRequest {
 
     private String productId;
     private String distributorId;
-    private long aantalLicenties;
+    private int amount;
     private String requestReferenceId;
 
-    public LicenseModel(String productId, String distributorId, long aantalLicenties, String requestReferenceId) {
+    public LicenseBodyRequest(String productId, String distributorId, int amount, String requestReferenceId) {
         this.productId = productId;
         this.distributorId = distributorId;
-        this.aantalLicenties = aantalLicenties;
+        this.amount = amount;
         this.requestReferenceId = requestReferenceId;
     }
 
@@ -22,8 +22,8 @@ public class LicenseModel {
         return distributorId;
     }
 
-    public long getAantalLicenties() {
-        return aantalLicenties;
+    public int getAmount() {
+        return amount;
     }
 
     public String getRequestReferenceId() {

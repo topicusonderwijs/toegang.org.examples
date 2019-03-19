@@ -1,6 +1,6 @@
 package nl.topicus.example.security;
 
-public class JwtConstants {
+public class JwsConstants {
 
     public static final String PUBLIC_KEY =  "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgyHALYGsphnM+bOxXG7p" +
             "IPi55m3WobL25lWklXV2ZuYqZg2WIBEMV/F868TCne4xMyN9SjP4zT/Zj+zKbaF2" +

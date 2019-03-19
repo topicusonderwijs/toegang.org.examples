@@ -86,8 +86,14 @@ public class JwsPayload implements Serializable {
         return rol;
     }
 
+    /**
+     * Plaatst alle waarden, behalve die van de tlink en lac, in een lijst als string
+     * Deze wordt gebruikt om alle velden, aan de voorkant, in te vullen met haar correcte waarde(n)
+     *
+     * @return de lijst met daarin de string waarde(n) van alle fields
+     */
     @JsonIgnore
     public List<String> getValues(){
-        return Arrays.asList(this.org, this.fn, this.sub, ""+this.exp, this.tlink, this.ean, this.aud, this.ref, this.rnd, this.rol);
+        return Arrays.asList(this.org, this.fn, this.sub, ""+this.exp, this.ean, this.aud, this.ref, this.rnd, this.rol);
     }
 }
