@@ -11,14 +11,6 @@
 
 <div class="container">
     <div id="result-container">
-        <div id="validation-result-text-box">
-            <div wicket:id="validationResultBox">
-                <p wicket:id="validationResult"></p>
-            </div>
-            <div>
-                <p>Server response: <span wicket:id="responseInfoText"></span></p>
-            </div>
-        </div>
         <div id="result-box">
             <div>
                 <b>Organisatie</b>
@@ -37,8 +29,25 @@
                 <p wicket:id="exp"></p>
             </div>
             <div>
-                <b>T-link</b>
-                <p wicket:id="tlink"></p>
+                <div id="tlink-box">
+                    <b>T-link</b>
+                    <a wicket:id="licenseLink">Buy licenses</a>
+                </div>
+                <div id="tlink-license-box">
+                    <span wicket:id="licenseList">
+                        <p wicket:id="license"></p>
+                    </span>
+                </div>
+                <div id="license-date-box">
+                    <div id="start-date-box">
+                        <b><p>Start date:</p></b>
+                        <p wicket:id="startDate"></p>
+                    </div>
+                    <div id="end-date-box">
+                        <b><p>End date:</p></b>
+                        <p wicket:id="endDate"></p>
+                    </div>
+                </div>
             </div>
             <div>
                 <b>EAN</b>
@@ -67,11 +76,19 @@
                 </p>
             </div>
         </div>
+        <div id="validation-result-text-box">
+            <div>
+                <p>Server response: <span wicket:id="responseInfoText"></span></p>
+            </div>
+            <div wicket:id="validationResultBox">
+                <p wicket:id="validationResult"></p>
+            </div>
+        </div>
     </div>
     <div class="token-form">
         <form wicket:id="tokenForm">
             <p>Enter your JWS token:</p>
-            <textarea placeholder="JWT Token" wicket:id="tokenField" cols="200" rows="10"></textarea>
+            <textarea placeholder="JWS Token" wicket:id="tokenField" cols="200" rows="6"></textarea>
             <div id="form-button-box">
                 <a wicket:id="clearTokenField">Clear field</a>
                 <input type="submit" wicket:id="submitToken" style="margin-top: 10px"/>

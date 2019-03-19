@@ -58,7 +58,7 @@ textarea {
 #result-box > div {
     display: flex;
     flex-direction: column;
-    min-height: 50px;
+    min-height: 120px;
 
 }
 
@@ -69,6 +69,45 @@ textarea {
 #result-box > div > b {
     color: #525252;
     border-bottom: 1px solid;
+}
+
+#tlink-license-box{
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+#tlink-license-box > span > p{
+    font-size: 12px;
+}
+
+#tlink-box{
+    color: #525252;
+    border-bottom: 1px solid;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#tlink-box > a:hover{
+    background-color: grey;
+    color: lightgreen;
+}
+
+#tlink-box > a{
+    transition: background-color 1s ease;
+    font-size: 12px;
+    padding: 2px;
+    font-weight: bold;
+    background-color: #525252;
+    color: lawngreen;
+}
+
+#license-date-box{
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    margin-top: auto;
+    font-weight: bold;
 }
 
 /*#result-text-box > p:nth-of-type(1) {*/
@@ -86,13 +125,13 @@ textarea {
     align-items: center;
 }
 
-#validation-result-text-box > div:nth-of-type(2) {
-    margin-left: auto;
-}
-
-#validation-result-text-box > div:nth-of-type(1) > p {
+#validation-result-text-box > div:nth-of-type(2) > p {
     font-weight: bold;
     color: #fff;
+}
+
+#validation-result-text-box > div:nth-of-type(2) {
+    margin-left: auto;
 }
 
 #valid-text-box {
@@ -152,7 +191,6 @@ textarea {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    height: 100%;
 }
 
 

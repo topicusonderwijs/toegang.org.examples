@@ -24,9 +24,9 @@ import java.util.Base64;
 
 public class JwsHelper {
 
-    private static JwsPayload JwsPayload = new JwsPayload();
     private static long expirationInMs;
     private static NumericDate expirationDate;
+    private static JwsPayload JwsPayload = new JwsPayload();
 
     private JwsHelper(){}
 
@@ -109,7 +109,7 @@ public class JwsHelper {
     }
 
     /**
-     * Vult 2 fields in. De eerste als leesbare datum en de tweede het datum in milliseconden
+     * Vult 2 fields in. De eerste als leesbare datum en als tweede het datum in milliseconden
      *
      * @param expirationInMs het vervaldatum van de JWS token in milliseconden
      */

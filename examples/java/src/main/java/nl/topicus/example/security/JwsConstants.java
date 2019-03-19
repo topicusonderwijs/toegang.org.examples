@@ -1,8 +1,5 @@
 package nl.topicus.example.security;
 
-/**
- * Hier vind je alle waarden die je nodig zal hebben, met betrekking tot JWS tokens
- */
 public class JwsConstants {
 
     public static final String PUBLIC_KEY =  "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgyHALYGsphnM+bOxXG7p" +
