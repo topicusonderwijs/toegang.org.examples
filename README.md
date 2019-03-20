@@ -39,7 +39,7 @@ Wanneer we een gebruiker doorsturen
 naar deze URL sturen we altijd ook een JWS token ([JSON Web Signature](https://tools.ietf.org/html/rfc7515)) mee als "toegangsbewijs".
 Dit kan op twee verschillende manieren (de keuze is aan de uitgever, en dient van tevoren aan ons team doorgegeven te worden):
 
-### (2a) JWS in hash
+### (2) JWS in hash
 
 We vullen de URL aan met een hash fragment met daarin de JWS. De complete URL ziet er dus schematisch als volgt uit:
 ```
@@ -53,11 +53,6 @@ Dit hash fragment komt niet direct op de `uitgever.nl` server aan; deze ziet all
 De browser van de gebruiker ziet het hash fragment wel, en de pagina die geserveerd wordt op `https://uitgever.nl/product-a` kan het ook
 uitlezen met Javascript. Deze manier is dus vooral nuttig voor (single-page) Javascript frontend applicaties. De applicatie gebruikt het
 token in de communicatie met zijn eigen backend als bewijs dat de gebruiker geautoriseerd is.
-
-### (2b) JWS als POST body
-
-In dit geval instrueren we de browser van de gebruiker om een POST request te doen op `https://uitgever.nl/product-a` met de JWS
-in de body.
 
 ## Stap 3. Decodeer het JWS en verifieer de handtekening
 
