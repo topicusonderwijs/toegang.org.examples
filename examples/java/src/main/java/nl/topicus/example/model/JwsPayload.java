@@ -87,7 +87,7 @@ public class JwsPayload implements Serializable {
     }
 
     /**
-     * Plaatst alle waarden, behalve die van de tlink en lac, in een lijst als string
+     * Plaats alle waarden, behalve die van de tlink en lac, in een lijst als string
      * Deze wordt gebruikt om alle velden, aan de voorkant, in te vullen met haar correcte waarde(n)
      *
      * @return de lijst met daarin de string waarde(n) van alle fields
