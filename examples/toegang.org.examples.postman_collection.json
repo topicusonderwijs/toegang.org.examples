@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "d19eef6a-5641-4714-aea9-4131858a1385",
+		"_postman_id": "4b41506f-31c6-4c85-b6df-1793bf0dc950",
 		"name": "toegang.org.examples",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -159,7 +159,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "{{api-root}}/tlinklicenses/getLicenseCodes?amount=5&requestReferenceId=aap&distributorId=Blink Educatie VO&productId=9789491795664",
+					"raw": "{{api-root}}/tlinklicenses/getLicenseCodes?amount=5&requestReferenceId=123&distributorId=Edubert&productId=9789999999664",
 					"host": [
 						"{{api-root}}"
 					],
@@ -215,25 +215,25 @@
 	],
 	"variable": [
 		{
-			"id": "be4c835e-d932-415c-b45d-856418bf690c",
+			"id": "3271ab50-c63f-4feb-ad5a-eb4e42bd40af",
 			"key": "idp-root",
-			"value": "https://idp-test.toegang.org",
+			"value": "https://idp-test.toegang.org/oidc",
 			"type": "string"
 		},
 		{
-			"id": "60b7adb0-b938-4d21-9c87-a117638aa4e8",
+			"id": "094560f0-0b52-4376-9b66-06b0557e23b2",
 			"key": "api-root",
 			"value": "https://api-test.toegang.org",
 			"type": "string"
 		},
 		{
-			"id": "22aa3d74-a4ad-4205-88f5-8c05bbdd7004",
+			"id": "5d2c65b8-79c3-4610-a5f4-e5785b6aa0b7",
 			"key": "client-id",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "1367d4a2-d3fd-4cc4-9dda-9b1d5cbddb3a",
+			"id": "e6282d47-13b4-42ad-a53f-96660b77b35e",
 			"key": "client-secret",
 			"value": "",
 			"type": "string"
