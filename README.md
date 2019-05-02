@@ -182,7 +182,7 @@ te kunnen maken van de API heeft u OAuth2 "client credentials" nodig en moet het
 bij TOEGANG.ORG, zoals hierboven besproken.
 
 Om de licentie-API aan te spreken heeft u eerst een tijdelijk Access Token nodig; dit is te verkrijgen door een
-OAuth2 client token request te doen op `https://idp.toegang.org/token` (test: `https://idp-test.toegang.org/token`).
+OAuth2 client token request te doen op `https://idp.toegang.org/oidc/token` (test: `https://idp-test.toegang.org/oidc/token`).
 Hierbij moeten de OAuth2 client name en client secret, gescheiden door `:` en vervolgens URL-safe Base64-encoded, in
 de `Authorization` header meegegeven worden.
 
