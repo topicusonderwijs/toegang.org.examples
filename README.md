@@ -105,18 +105,19 @@ De payload van de geverifieerde JWS bevat de volgende velden:
 
 Veld    | Verplicht | Omschrijving
 ---     | :---:     | ---
+aud     | Ja        | Unieke identifier van de organisatie van de uitgever
+ean     | Ja        | EAN van het product
+exp     | Ja        | Timestamp van het tijdstip tot wanneer de JWS geldig is (milliseconden sinds Unix epoch)
+ref     | Ja        | Meldcode voor de helpdesk om de gebruiker te kunnen volgen door het proces
+sub     | Ja        | ID van het account die uniek is voor de uitgever
+tlink   | Ja        | TLink-code van de licentie
+email   | Nee       | Geverifieerde email van de gebruiker
+extids  | Nee       | Unieke identifier van een gebruiker bij andere uitgevers (alleen gevuld wanneer er sublicenties worden gebruikt)
+fn      | Nee       | Voornaam van de gebruiker
+lac     | Nee       | Linked accounts; historische identifiers van deze gebruiker door bijvoorbeeld een fusie of account merge
 org     | Nee       | ESN van de school van de gebruiker of organisatie waar die school onder valt
 orgname | Nee       | Naam van de school van de gebruiker of organisatie waar die school onder valt
-fn      | Nee       | Voornaam van de gebruiker
-sub     | Ja        | Id van de account die uniek is voor de uitgever
-exp     | Ja        | Timestamp van het tijdstip tot wanneer de JWS geldig is (milliseconden sinds Unix epoch).
-tlink   | Ja        | De TLink-code van de licentie.
-ean     | Ja        | De EAN van het product.
-aud     | Ja        | De unieke identifier van de organisatie van de uitgever
-ref     | Ja        | De meldcode voor de helpdesk om de gebruiker te kunnen volgen door het proces.
-lac     | Nee       | Linked accounts; historische identifiers van deze gebruiker door bijvoorbeeld een fusie of account merge
 rol	    | Nee	    | Rol van de ingelogde gebruiker (eduPersonAffiliation)
-extids  | Nee       | De unieke identifier van een gebruiker bij andere uitgevers (alleen gevuld wanneer er sublicenties worden gebruikt)
 
 Op basis van deze gegevens zou de uitgever de gebruiker in moeten kunnen loggen.
 Log de gebruiker in voor het product wat in het `ean` veld staat.
