@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "4b41506f-31c6-4c85-b6df-1793bf0dc950",
+		"_postman_id": "ab47b8c6-4258-4e4c-99bc-6976b80f530e",
 		"name": "toegang.org.examples",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -189,6 +189,36 @@
 				"description": "Nieuwe licenties uitgeven"
 			},
 			"response": []
+		},
+		{
+			"name": "Licenties ophalen",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "KNF attributen ophalen",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
@@ -215,26 +245,38 @@
 	],
 	"variable": [
 		{
-			"id": "3271ab50-c63f-4feb-ad5a-eb4e42bd40af",
+			"id": "2c43d54c-79ae-4abb-9941-7c05b4da497f",
 			"key": "idp-root",
 			"value": "https://idp-test.toegang.org/oidc",
 			"type": "string"
 		},
 		{
-			"id": "094560f0-0b52-4376-9b66-06b0557e23b2",
+			"id": "f5bd464e-5093-46c3-81d7-d9953bd1f2bb",
 			"key": "api-root",
 			"value": "https://api-test.toegang.org",
 			"type": "string"
 		},
 		{
-			"id": "5d2c65b8-79c3-4610-a5f4-e5785b6aa0b7",
+			"id": "7060a6a0-9e3a-4db0-90f0-42145707cba4",
 			"key": "client-id",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "e6282d47-13b4-42ad-a53f-96660b77b35e",
+			"id": "6d26c4a2-82c7-4c3d-9af1-81a1e47f36f9",
 			"key": "client-secret",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "ce446f22-0cc5-40c1-bceb-eb43936a8988",
+			"key": "user-id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "4d2131a5-c0cf-41f3-937a-108e969fcd2d",
+			"key": "tlink",
 			"value": "",
 			"type": "string"
 		}
