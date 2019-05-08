@@ -274,8 +274,6 @@ parameter            | betekenis
 
 ## KNF attributen ophalen
 
-- Gebruiker moet al eens via TOEGANG.ORG ingelogd zijn via kennisnet om deze attributen op te halen
-
 Om de KNF attributen van een gebruiker op te halen heb je éen van de TLinks van deze gebruiker nodig.
 Belangrijk daarbij is dat de gebruiker al eens via TOEGANG.ORG via Kennisnet ingelogd
 moet zijn geweest voordat de KNF attributen beschikbaar zijn.
