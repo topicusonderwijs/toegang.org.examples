@@ -157,9 +157,9 @@ Dit request geeft een lege response met een van de volgende statuscodes:
 
 Statuscode | Omschrijving
 ---        | ---
-204        | De terugkoppeling is in goede orde ontvangen.
-400        | Het request object was niet in het juiste formaat.
-401        | De JWS is niet geldig.
+204        | De terugkoppeling is in goede orde ontvangen
+400        | Het request object was niet in het juiste formaat
+401        | De JWS is niet geldig
 
 
 ## Testen
@@ -175,14 +175,11 @@ via onze API (zie hieronder). Vervolgens kan er een gebruiker inloggen via een v
 Bij de eerste keer inloggen vraagt TOEGANG.ORG om een aantal persoonlijke gegevens. Daarna wordt de gebruiker doorgestuurd naar
 de omgeving van de uitgever. 
 
-## Aanmaken van licenties
+## Autorisatie
 
-Met behulp van de TOEGANG.ORG licentie-API kunnen uitgevers licenties aanmaken; de met dat proces gegenereerde "T-Link"
-licentiecodes kunnen worden doorgegeven aan de eindgebruiker na bijvoorbeeld een aanschaf in een webshop. Om gebruik
-te kunnen maken van de API heeft u OAuth2 "client credentials" nodig en moet het betreffende product ingericht zijn
-bij TOEGANG.ORG, zoals hierboven besproken.
-
-Om de licentie-API aan te spreken heeft u eerst een tijdelijk Access Token nodig; dit is te verkrijgen door een
+Om gebruik te kunnen maken van de TOEGANG.ORG API heeft u OAuth2 "client credentials" nodig
+en moet het betreffende product ingericht zijn bij TOEGANG.ORG, zoals hierboven besproken.
+Hiervoor heeft u eerst een tijdelijk Access Token nodig; deze is te verkrijgen door een
 OAuth2 client token request te doen op `https://idp.toegang.org/oidc/token` (test: `https://idp-test.toegang.org/oidc/token`).
 Hierbij moeten de OAuth2 client name en client secret, gescheiden door `:` en vervolgens URL-safe Base64-encoded, in
 de `Authorization` header meegegeven worden.
@@ -194,7 +191,7 @@ Authorization: Basic Y2xpZW50LWlkOmNsaWVudC1zZWNyZXQ=
 
 grant_type=client_credentials
 ```
-Het response hiervan
+Bij een succesvolle request ziet de response (JSON) er als volgt uit:
 ```
 {
     "access_token": "YmFkN2Y3ZmItOTUzZC00M2YyLWExNmUtYW...",
@@ -202,27 +199,28 @@ Het response hiervan
     "token_type": "Bearer"
 }
 ```
-bevat het token dat toegang geeft tot de licentie-API.
+Deze access_token kunt u vervolgens gebruiken om API calls te maken naar `https://api.toegang.org` (testomgeving: 
+`https://api-test.toegang.org`) door deze in de Header mee te geven (Authorization: Bearer {{token}})
 
-De licentie-API draait op `https://api.toegang.org` (testomgeving: 
-`https://api-test.toegang.org`). Het formaat van het request is:
+## Aanmaken van licenties
 
+Uitgevers kunnen via de TOEGANG.ORG API licenties aanmaken.
+Dit kan met behulp van onderstaande request:
 ```http request
 POST /tlinklicenses/getLicenseCodes?productId=9789999999664&requestReferenceId=123&amount=50&distributorId=Edubert HTTP/1.1
 Authorization: Bearer YmFkN2Y3ZmItOTUzZC00M2YyLWExNmUtYW...
 ```
 
-Het token in de `Authorization` header is hetgene dat zojuist verkregen is via de OAuth2 client credentials flow.
-De verschillende parameters staan voor:
+Het ophalen van een Authorization token wordt uitgelegd in het hoofdstuk Autorisatie
 
 parameter            | betekenis
 ---                  | ---
-`productId`          | EAN van het product waarvoor de licenties aangemaakt worden.
-`requestReferenceId` | Door de uitgever aangemaakte referentie voor deze batch. Max. 160 karakters. Mag niet eerder gebruikt zijn.
-`amount`             | Aantal licenties dat aangemaakt moet worden.
+`productId`          | EAN van het product waarvoor de licenties aangemaakt worden
+`requestReferenceId` | Door de uitgever aangemaakte referentie voor deze batch. Max. 160 karakters. Mag niet eerder gebruikt zijn
+`amount`             | Aantal licenties dat aangemaakt moet worden
 `distributorId`      | Naam van de uitgever zoals overeengekomen met TOEGANG.ORG
 
-Bij een succesvol request ziet het response (JSON) er als volgt uit:
+Bij een succesvolle request ziet de response (JSON) er als volgt uit:
 ```http request
 {
     "codes": [
@@ -239,8 +237,74 @@ product als dat nog in de toekomst ligt, en anders de huidige datum. `endDate` i
 
 Voor dit request bieden we voorbeeldimplementaties voor zowel PHP als NodeJS.
 
+## Ophalen van licenties
+
+Voor het ophalen van licenties van een gebruiker wordt een API call gebruikt.
+Daarvoor is de Account ID van de gebruiker nodig, welke te vinden is in de 'sub' van JWS (zie stap 4).
+Deze Account ID moet in de plaats {{user-id}} in onderstaande request komen.
+Daarnaast moet de autorisatiecode (zie het hoofdstuk autorisatie) mee worden gestuurd.
+```http request
+GET /accounts/{{user-id}}/licenses HTTP/1.1
+Authorization: Bearer YmFkN2Y3ZmItOTUzZC00M2YyLWExNmUtYW...
+```
+
+Bij een succesvolle request ziet de response (JSON) er als volgt uit:
+```http request
+    {
+        "licenseState": "ACTIVE",
+        "startDate": "2019-05-07",
+        "activationDate": "2019-05-07T12:52:05.066Z",
+        "endDate": "2019-06-01",
+        "product": {
+            "ean": "9789491795664",
+            "licenseType": "SCHOOLJAARLICENTIE"
+        }
+    }
+```
+
+parameter            | betekenis
+---                  | ---
+`licenseState`       | Status van de licentie (alleen ACTIVE licenties worden opgehaald met deze call)
+`startDate`          | Datum vanaf wanneer deze licentie geactiveerd had kunnen worden
+`activationDate`     | Datum en tijd vanaf wanneer het product voor deze gebruiker geactiveerd is
+`endDate`            | Datum vanaf wanneer het product niet meer gebruikt kan worden door deze gebruiker
+`product`            | Een product waar de gebruiker toegang tot heeft
+`ean`                | EAN van het product
+`licenseType`        | Licentietype van het product
+
+## KNF attributen ophalen
+
+- Gebruiker moet al eens via TOEGANG.ORG ingelogd zijn via kennisnet om deze attributen op te halen
+
+Om de KNF attributen van een gebruiker op te halen heb je éen van de TLinks van deze gebruiker nodig.
+Belangrijk daarbij is dat de gebruiker al eens via TOEGANG.ORG via Kennisnet ingelogd
+moet zijn geweest voordat de KNF attributen beschikbaar zijn.
+De TLink is te verkrijgen uit de payload van JWS (zie stap 4)
+```http request
+GET /accounts/attributes/{{tlink}} HTTP/1.1
+Authorization: Bearer YmFkN2Y3ZmItOTUzZC00M2YyLWExNmUtYW...
+```
+
+Bij een succesvolle request ziet de response (JSON) er als volgt uit:
+```http request
+{
+    "uid": "bla",
+    "eckId": "",
+    "givenName": "Tester",
+    "digiDeliveryId": "",
+    "nlEduPersonRealId": "",
+    "eduPersonAffiliation": "student",
+    "nlEduPersonProfileId": "",
+    "nlEduPersonHomeOrganization": "",
+    "nlEduPersonHomeOrganizationId": "25GV"
+}
+```
+
+De meegegeven KNF attributen worden in de volgende link uitgebreid uitgelegd:
+https://developers.wiki.kennisnet.nl/index.php?title=KNF:Attributen_overzicht_voor_Identity_Providers
+
 ## Postman voorbeelden
 
-Al bovenstaande requests zijn ook te testen met [Postman](https://www.getpostman.com). Importeer de
+Alle bovenstaande requests zijn ook te testen met [Postman](https://www.getpostman.com). Importeer de
 [TOEGANG.ORG collection](examples/toegang.org.examples.postman_collection.json) en vul in de variables uw eigen
-`client-name` en `client-secret` in.
+`client-name`, `client-secret`, `client-id` en `tlink` in.
