@@ -193,6 +193,16 @@
 		{
 			"name": "Licenties ophalen",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "M3nlp1pbyTN6vXR3ogT67ZRCxSxaqvwk0KS5h4H7dKz",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"body": {
@@ -200,7 +210,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": ""
+					"raw": "{{api-root}}/accounts/{{user-id}}/licenses",
+					"host": [
+						"{{api-root}}"
+					],
+					"path": [
+						"accounts",
+						"{{user-id}}",
+						"licenses"
+					]
 				}
 			},
 			"response": []
@@ -208,6 +226,16 @@
 		{
 			"name": "KNF attributen ophalen",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "M3nlp1pbyTN6vXR3ogT67ZRCxSxaqvwk0KS5h4H7dKz",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"body": {
@@ -215,7 +243,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": ""
+					"raw": "{{api-root}}/accounts/attributes/{{tlink}}",
+					"host": [
+						"{{api-root}}"
+					],
+					"path": [
+						"accounts",
+						"attributes",
+						"{{tlink}}"
+					]
 				}
 			},
 			"response": []
@@ -245,37 +281,37 @@
 	],
 	"variable": [
 		{
-			"id": "2c43d54c-79ae-4abb-9941-7c05b4da497f",
+			"id": "55a4ee03-daab-4609-bcde-68115429b902",
 			"key": "idp-root",
 			"value": "https://idp-test.toegang.org/oidc",
 			"type": "string"
 		},
 		{
-			"id": "f5bd464e-5093-46c3-81d7-d9953bd1f2bb",
+			"id": "5165499d-a227-42c7-9fcb-9157511ea052",
 			"key": "api-root",
 			"value": "https://api-test.toegang.org",
 			"type": "string"
 		},
 		{
-			"id": "7060a6a0-9e3a-4db0-90f0-42145707cba4",
+			"id": "00697755-aec2-4e0b-a957-c4647f475f40",
 			"key": "client-id",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "6d26c4a2-82c7-4c3d-9af1-81a1e47f36f9",
+			"id": "53966d2a-e2f4-4785-815a-25c8787267ca",
 			"key": "client-secret",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "ce446f22-0cc5-40c1-bceb-eb43936a8988",
+			"id": "ebc2af4c-a158-4193-a0e0-ad51b38db84c",
 			"key": "user-id",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "4d2131a5-c0cf-41f3-937a-108e969fcd2d",
+			"id": "df128fe1-3244-4a6c-90b6-d57892ef83e5",
 			"key": "tlink",
 			"value": "",
 			"type": "string"
