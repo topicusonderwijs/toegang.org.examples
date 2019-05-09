@@ -250,16 +250,16 @@ Authorization: Bearer YmFkN2Y3ZmItOTUzZC00M2YyLWExNmUtYW...
 
 Bij een succesvolle request ziet de response (JSON) er als volgt uit:
 ```http request
-    {
-        "licenseState": "ACTIVE",
-        "startDate": "2019-05-07",
-        "activationDate": "2019-05-07T12:52:05.066Z",
-        "endDate": "2019-06-01",
-        "product": {
-            "ean": "9789491795664",
-            "licenseType": "SCHOOLJAARLICENTIE"
-        }
+{
+    "licenseState": "ACTIVE",
+    "startDate": "2019-05-07",
+    "activationDate": "2019-05-07T12:52:05.066Z",
+    "endDate": "2019-06-01",
+    "product": {
+        "ean": "9789491795664",
+        "licenseType": "SCHOOLJAARLICENTIE"
     }
+}
 ```
 
 parameter            | betekenis
@@ -286,15 +286,17 @@ Authorization: Bearer YmFkN2Y3ZmItOTUzZC00M2YyLWExNmUtYW...
 Bij een succesvolle request ziet de response (JSON) er als volgt uit:
 ```http request
 {
-    "uid": "bla",
-    "eckId": "",
-    "givenName": "Tester",
-    "digiDeliveryId": "",
-    "nlEduPersonRealId": "",
-    "eduPersonAffiliation": "student",
-    "nlEduPersonProfileId": "",
-    "nlEduPersonHomeOrganization": "",
-    "nlEduPersonHomeOrganizationId": "25GV"
+	[
+		"uid": "bla",
+		"eckId": "",
+		"givenName": "Tester",
+		"digiDeliveryId": "",
+		"nlEduPersonRealId": "",
+		"eduPersonAffiliation": "student",
+		"nlEduPersonProfileId": "",
+		"nlEduPersonHomeOrganization": "",
+		"nlEduPersonHomeOrganizationId": "25GV"
+	]
 }
 ```
 
