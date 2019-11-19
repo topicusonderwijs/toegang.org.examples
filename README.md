@@ -48,10 +48,8 @@ Bijvoorbeeld:
 ```
 https://uitgever.nl/product-a#eyJhbGciOiJSUzI1NiIsImtpZCI6InpKYzVGYkFHelM2Ul9BOWN1W...
 ```
-Dit hash fragment komt niet direct op de `uitgever.nl` server aan; deze ziet alleen een `GET` request op `https://uitgever.nl/product-a`.
-De browser van de gebruiker ziet het hash fragment wel, en de pagina die geserveerd wordt op `https://uitgever.nl/product-a` kan het ook
-uitlezen met Javascript. Deze manier is dus vooral nuttig voor (single-page) Javascript frontend applicaties. De applicatie gebruikt het
-token in de communicatie met zijn eigen backend als bewijs dat de gebruiker geautoriseerd is.
+Dit hash fragment komt niet direct op de `uitgever.nl` server aan; deze ziet alleen een `GET` request op `https://uitgever.nl/product-a`. Hiermee wordt voorkomen dat het JWS token, met daarin eventuele identiteitsgegevens van een gebruiker, per definitie 'gelekt' kan worden in request-logs.
+De browser van de gebruiker ziet het hash fragment wel, en de pagina die geserveerd wordt op `https://uitgever.nl/product-a` kan het ook uitlezen met Javascript en verder verwerken.
 
 ## Stap 3. Decodeer het JWS en verifieer de handtekening
 
