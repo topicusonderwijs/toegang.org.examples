@@ -36,10 +36,9 @@ Deze URL moeten opengezet worden in de gebruiksomgeving (voor gebruikers zonder 
 ## Stap 2. Lees de JWS uit
 
 Wanneer we een gebruiker doorsturen
-naar deze URL sturen we altijd ook een JWS token ([JSON Web Signature](https://tools.ietf.org/html/rfc7515)) mee als "toegangsbewijs".
-Dit kan op twee verschillende manieren (de keuze is aan de uitgever, en dient van tevoren aan ons team doorgegeven te worden):
+naar deze URL sturen we altijd ook een JWS token ([JSON Web Signature](https://tools.ietf.org/html/rfc7515)) mee als "toegangsbewijs". Dit kan op de volgende manier:
 
-### (2) JWS in hash
+### JWS in hash
 
 We vullen de URL aan met een hash fragment met daarin de JWS. De complete URL ziet er dus schematisch als volgt uit:
 ```
