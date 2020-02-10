@@ -124,6 +124,8 @@ inlogflows een sterke garantie kan geven m.b.t. de identiteit van de gebruiker i
 gegevens te koppelen aan de gebruiker. Voor de toekomst staat wel functionaliteit gepland waarmee de uitgever een
 sterkere authenticatie af kan dwingen.
 
+In de toekomst worden mogelijk nieuwe velden toegevoegd, houdt hier rekening mee bij de implementatie.
+
 ## Stap 5. Terugkoppeling naar TOEGANG.ORG
 
 Om het mogelijk te maken voor TOEGANG.ORG om de koppeling met de uitgever te monitoren, dient de gebruiksomgeving
