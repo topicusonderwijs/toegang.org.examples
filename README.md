@@ -116,6 +116,7 @@ org     | Nee       | ESN van de school van de gebruiker of organisatie waar die
 orgname | Nee       | Naam van de school van de gebruiker of organisatie waar die school onder valt
 rol	    | Nee	    | Rol van de ingelogde gebruiker (eduPersonAffiliation)
 rnd	| Nee		| Random UUID om replay attacks te detecteren
+endDate	| Nee	    | *(binnenkort)* Einddatum van de licentie (2020-04-01)
 
 Op basis van deze gegevens zou de uitgever de gebruiker in moeten kunnen loggen.
 Log de gebruiker in voor het product wat in het `ean` veld staat.
