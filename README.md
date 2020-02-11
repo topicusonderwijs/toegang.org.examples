@@ -102,19 +102,20 @@ De payload van de geverifieerde JWS bevat de volgende velden:
 
 Veld    | Verplicht | Omschrijving
 ---     | :---:     | ---
-aud     | Ja        | Unieke identifier van de organisatie van de uitgever
+aud     | Ja        | Unieke identifier van de organisatie van de uitgever (UUID)
 ean     | Ja        | EAN van het product
-exp     | Ja        | Timestamp van het tijdstip tot wanneer de JWS geldig is (milliseconden sinds Unix epoch)
-ref     | Ja        | Meldcode voor de helpdesk om de gebruiker te kunnen volgen door het proces
-sub     | Ja        | ID van het account die uniek is voor de uitgever
-tlink   | Ja        | TLink-code van de licentie
+exp     | Ja        | Timestamp van het tijdstip tot wanneer de JWS geldig is (**milliseconden** sinds Unix epoch, i.t.t. RFC 7519)
+ref     | Ja        | Meldcode voor de helpdesk om de gebruiker te kunnen volgen door het proces (XXXXXXXX - XXXXXXXX)
+sub     | Ja        | ID van het account die uniek is voor de uitgever (32 of 64 (=oud) hex karakters)
+tlink   | Ja        | TLink-code van de licentie (XXXXXXXX)
 email   | Nee       | Geverifieerde email van de gebruiker
-extids  | Nee       | Unieke identifier van een gebruiker bij andere uitgevers (alleen gevuld wanneer er sublicenties worden gebruikt)
+extids  | Nee       | Unieke identifier van een gebruiker bij andere uitgevers (alleen gevuld wanneer er sublicenties worden gebruikt) - [{"orgid":...,"externId":...}]
 fn      | Nee       | Voornaam van de gebruiker
-lac     | Nee       | Linked accounts; historische identifiers van deze gebruiker door bijvoorbeeld een fusie of account merge
-org     | Nee       | ESN van de school van de gebruiker of organisatie waar die school onder valt
+lac     | Nee       | Linked accounts; array met historische identifiers van deze gebruiker door bijvoorbeeld een fusie of account merge
+org     | Nee       | ESN van de school van de gebruiker of organisatie waar die school onder valt (UUID)
 orgname | Nee       | Naam van de school van de gebruiker of organisatie waar die school onder valt
 rol	    | Nee	    | Rol van de ingelogde gebruiker (eduPersonAffiliation)
+rnd	| Nee		| Random UUID om replay attacks te detecteren
 
 Op basis van deze gegevens zou de uitgever de gebruiker in moeten kunnen loggen.
 Log de gebruiker in voor het product wat in het `ean` veld staat.
