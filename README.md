@@ -120,13 +120,33 @@ endDate	| Nee	    | *(binnenkort)* Einddatum van de licentie (2020-04-01)
 
 Op basis van deze gegevens zou de uitgever de gebruiker in moeten kunnen loggen.
 Log de gebruiker in voor het product wat in het `ean` veld staat.
+Voorbeeld payload:
+
+```{
+	"aud":	"9089c018-daf8-41a6-8d78-068e6053f42d",
+	"ean":	"1234567890123",
+	"exp":	1581595892039,
+	"ref":	"BEXC4NX2 - B64EDT5M",
+	"sub":	"01021a5b98a14385a4064cb66bc9a082",
+	"tlink":"TLINK123",
+	"email":"hans@weekend.nl",
+	"extids":[{orgid: "F33E1046-ADB2-4925-FBA6-B00AFFCF3B00", externId: "02131a5b88b14385a4064cb66bc9a073"}],
+	"fn":	"Hans",
+	"lac":	["861913bf76c24e5583f7bb844a190863", "2d4020edeaa94759947193435838d077"],
+	"org":	"D45E1046-ADB2-4925-FBA6-B00AFFCF3B99",
+	"orgname":"Zondag College",
+	"rol":	"employee",
+	"rnd":	"3b2c2294-03cf-4d45-9e07-1ec01584800a",
+	"endDate":"2020-02-13"
+}
+```
 
 **LET OP**: omdat TOEGANG.ORG niet bij alle
 inlogflows een sterke garantie kan geven m.b.t. de identiteit van de gebruiker is het niet aan te raden om persoonlijke
 gegevens te koppelen aan de gebruiker. Voor de toekomst staat wel functionaliteit gepland waarmee de uitgever een
 sterkere authenticatie af kan dwingen.
 
-In de toekomst worden mogelijk nieuwe velden toegevoegd, houdt hier rekening mee bij de implementatie.
+In de toekomst worden mogelijk nieuwe velden toegevoegd, houd hier rekening mee bij de implementatie.
 
 ## Stap 5. Terugkoppeling naar TOEGANG.ORG
 
