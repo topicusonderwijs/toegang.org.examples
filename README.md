@@ -122,7 +122,8 @@ Op basis van deze gegevens zou de uitgever de gebruiker in moeten kunnen loggen.
 Log de gebruiker in voor het product wat in het `ean` veld staat.
 Voorbeeld payload:
 
-```{
+```
+{
 	"aud":	"9089c018-daf8-41a6-8d78-068e6053f42d",
 	"ean":	"1234567890123",
 	"exp":	1581595892039,
