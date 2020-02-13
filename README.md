@@ -287,20 +287,21 @@ Authorization: Bearer YmFkN2Y3ZmItOTUzZC00M2YyLWExNmUtYW...
 Bij een succesvolle request ziet de response (JSON) er als volgt uit:
 ```http request
 {
-	[
-		"uid": "bla",
-		"eckId": "",
-		"givenName": "Tester",
-		"digiDeliveryId": "",
-		"nlEduPersonRealId": "",
-		"eduPersonAffiliation": "student",
-		"nlEduPersonProfileId": "",
-		"nlEduPersonHomeOrganization": "",
-		"nlEduPersonHomeOrganizationId": "25GV"
-	]
+	"uid": ["4fa672@iets"],
+	"eckId": ["https://ketenid.nl/201703/ef863ed"],
+	"givenName": ["Hans"],
+	"digiDeliveryId": ["ED8AE607-WI3N-414C-T87A-624E74S7T005"],
+	"nlEduPersonRealId": ["4567234@som.today"],
+	"eduPersonAffiliation": ["student"],
+	"nlEduPersonProfileId": ["4567234@1.som.today"],
+	"nlEduPersonHomeOrganization": ["Demoschool"],
+	"nlEduPersonHomeOrganizationId": ["99DE"],
+	"sn": ["Weekend"],
+	"entree_uid": ["4fa672@iets"],
 }
 ```
 
+Dit zijn de meest voorkomende attributen. Het kan voorkomen dat er meer of minder attributen bekend zijn van de gebruiker. Als een gebruiker meerdere KNF accounts heeft, bevatten de arrays meer dan 1 element.
 De meegegeven KNF attributen worden in de volgende link uitgebreid uitgelegd:
 https://developers.wiki.kennisnet.nl/index.php?title=KNF:Attributen_overzicht_voor_Identity_Providers
 
