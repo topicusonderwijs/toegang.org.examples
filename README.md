@@ -313,11 +313,15 @@ Bij een succesvolle request ziet de response (JSON) er als volgt uit:
 	"givenName": ["Hans"],
 	"digiDeliveryId": ["ED8AE607-WI3N-414C-T87A-624E74S7T005"],
 	"nlEduPersonRealId": ["4567234@som.today"],
+	"nlEduPersonUnit": ["1B"],
 	"eduPersonAffiliation": ["student"],
 	"nlEduPersonProfileId": ["4567234@1.som.today"],
 	"nlEduPersonHomeOrganization": ["Demoschool"],
 	"nlEduPersonHomeOrganizationId": ["99DE"],
 	"sn": ["Weekend"],
+	"nlEduPersonTussenvoegsels": ["van der"],
+	"ou": ["1B"],
+	"mail": ["hans@weekend.nl"],
 	"entree_uid": ["4fa672@iets"],
 }
 ```
