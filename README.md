@@ -1,71 +1,76 @@
-# TOEGANG.ORG voor uitgevers
+This documentation is also available in [Dutch](https://github.com/topicusonderwijs/toegang.org.examples/blob/master/README.NL.md)
 
-De manier waarop licenties voor elektronisch lesmateriaal in Nederland in het algemeen worden verkocht heeft geleid tot
-een complex proces van identificatie en autorisatie van de eindgebruiker. TOEGANG.ORG ontzorgt de uitgever door dit proces
-technisch voor zijn rekening te nemen en waar nodig menselijk te ondersteunen. 
+# TOEGANG.ORG
 
-Als een uitgever gebruik wil maken van TOEGANG.ORG, dient de gebruiksomgeving van een uitgever aangesloten te worden
-op de omgeving van TOEGANG.ORG. Wanneer dit geïmplementeerd is, functioneert TOEGANG.ORG als poortwachter die alleen
-gebruikers met een geldige licentie doorstuurt naar de gebruiksomgeving. De laatste hoeft dan alleen nog te controleren
-of de gebruiker een geldig toegangsbewijs van TOEGANG.ORG bezit. Deze pagina geeft hiervoor de technische specificaties, 
-met voorbeelden in veelgebruikte programmeertalen.
+Digital content is sold in the Netherlands in a way that has led to a complex process of identification and authorization of the end user.
+TOEGANG.ORG helps the publisher by taking care of the technical side of this process and providing support where necessary.
 
-## Implementatieproces
+If a publisher wants to use TOEGANG.ORG, its learning environment must be connected to the TOEGANG.ORG service.
+When this is implemented, TOEGANG.ORG functions as a gatekeeper that only redirects users with a valid license to the learning environment.
+The latter then only needs to check whether the user used a valid token issued by TOEGANG.ORG.
+This page provides the technical specifications, with examples in commonly used programming languages.
 
-Het implementeren van de aansluiting van een gebruiksomgeving op TOEGANG.ORG vindt plaats in samenwerking met het technische
-supportteam van TOEGANG.ORG. We koppelen eerst een testomgeving van TOEGANG.ORG aan een testomgeving van de uitgever. Aan de
-kant van TOEGANG.ORG zullen we de volgende zaken inrichten:
+## Implementation process
 
-* Uw elektronische leermiddelen ("producten") worden geregistreerd bij TOEGANG.ORG. Voor elk product kunt u een
-apart endpoint (URL) opgeven waarop de gebruiker in de gebruiksomgeving binnenkomt. Dit kan naar wens ook hetzelfde endpoint
-zijn (zoals hieronder uitgelegd nemen we het EAN ook op in het JWS token).
-* We maken OAuth2-credentials aan waarmee de uitgever o.a. zelf extra licenties uit kan geven.
+The technical support team of TOEGANG.ORG aids in the implementation of the connection of the learning environment to TOEGANG.ORG.
+We first link a TOEGANG.ORG test environment to the publisher's test environment. We add the following configuration:
 
-De stappen die aan de kant van de gebruiksomgeving genomen moeten worden staan hieronder uitgelegd.
+- Your digital content ("products") is registered with TOEGANG.ORG. For each product you can specify a separate endpoint (URL) at which the user enters the learning environment.
+  If desired, this can also be the same endpoint (as explained below, we also include the EAN in the JWS token).
+- We create OAuth2 credentials that allow the publisher to create additional licenses, among other things.
 
-## Stap 1. Maak een endpoint waarop TOEGANG.ORG-gebruikers binnen kunnen komen
+In order to connect the learning environment to toegang.org a publisher has to follow the steps explained below.
 
-Wanneer een gebruiker met een TLink-licentiecode of EAN bij TOEGANG.ORG aankomt, bepalen wij zijn/haar identiteit en checken
-we de autorisatie voor die licentie. Klopt deze, dan sturen we de gebruiker door naar de URL die we voor u hebben geregistreerd bij
-het betreffende product, bijvoorbeeld
+## Step 1. Create an endpoint where TOEGANG.ORG users can enter
+
+When a user arrives at TOEGANG.ORG with a TLink license code or EAN, we determine his / her identity and check the authorization for that license.
+If everything is correct, we will forward the user to the URL configured for the requested product.
+
 ```
 https://uitgever.nl/product-a
 ```
-Deze URL moeten opengezet worden in de gebruiksomgeving (voor gebruikers zonder sessie).
 
-## Stap 2. Lees de JWS uit
+This URL should be accessible in the learning environment for users without a session.
 
-Wanneer we een gebruiker doorsturen
-naar deze URL sturen we altijd ook een JWS token ([JSON Web Signature](https://tools.ietf.org/html/rfc7515)) mee als "toegangsbewijs". Dit kan op de volgende manier:
+## Step 2. Read the JWS from the URL
+
+When we forward a user to this URL, we always send a JWS token ([JSON Web Signature](https://tools.ietf.org/html/rfc7515)) which functions as an admission ticket.
+We will send this JWS in the hash of the URL.
 
 ### JWS in hash
 
-We vullen de URL aan met een hash fragment met daarin de JWS. De complete URL ziet er dus schematisch als volgt uit:
+We complete the URL with a hash fragment containing the JWS.
+The complete URL therefore looks like this:
+
 ```
 {product-url}#{JWS}
 ```
-Bijvoorbeeld:
+
+For example:
+
 ```
 https://uitgever.nl/product-a#eyJhbGciOiJSUzI1NiIsImtpZCI6InpKYzVGYkFHelM2Ul9BOWN1W...
 ```
-Dit hash fragment komt niet direct op de `uitgever.nl` server aan; deze ziet alleen een `GET` request op `https://uitgever.nl/product-a`. Hiermee wordt voorkomen dat het JWS token, met daarin eventuele identiteitsgegevens van een gebruiker, per definitie 'gelekt' kan worden in request-logs.
-De browser van de gebruiker ziet het hash fragment wel, en de pagina die geserveerd wordt op `https://uitgever.nl/product-a` kan het ook uitlezen met Javascript en verder verwerken.
 
-## Stap 3. Decodeer het JWS en verifieer de handtekening
+This hash fragment does not arrive directly on the uitgever.nl server; the server only sees a GET request at https://uitgever.nl/product-a.
+This prevents the JWS token, containing identity data from the user, from being 'leaked' into request logs.
+The user's browser does see the hash fragment and the webpage that is served on https://uitgever.nl/product-a can also read it with Javascript and process it.
 
-Het JWS token is een door TOEGANG.ORG specifiek voor deze inlogactie gegenereerde string, die voor de gebruiksomgeving van de uitgever
-zowel dient ter indicatie van de identiteit van de gebruiker, als ter bewijs dat deze geautoriseerd is. De digitale handtekening
-in de JWS garandeert dat het token van TOEGANG.ORG afkomstig is. Het is van belang dat de uitgever dit ook *verifieert*;
-zo niet, dan zou iedereen die de product-URL weet toegang kunnen krijgen tot het product.
-Het token kan op twee manieren worden geverifieerd:
+## Step 3. Decode the JWS and verify the signature
 
-- Middels een door TOEGANG.ORG beschikbaar gesteld verificatie-endpoint;
-- Door zelf de verificatie uit te voeren middels de public key van TOEGANG.ORG.
+The JWS token is a string generated by TOEGANG.ORG specifically for this login, its purpose is to provide the identity of the user as well as proof that the user is authorized to access the digital content.
+The signature in the JWS guarantees that the token comes from TOEGANG.org.
+It is important that the publisher also verifies this; if not, anyone who knows the product URL could gain access to the product.
+The token can be _verified_ in two ways:
 
-### (3a) Verificatie-endpoint
-Het verificatie-endpoint verifieert het JWS en stuurt de inhoud weer terug.
-Het endpoint is bereikbaar op `https://api.toegang.org/jwt/verify` -- voor de testomgeving op `https://api-test.toegang.org/jwt/verify`.
-De JWS moet in de body van een `POST` request als JSON-object (met 1 veld `jws`) worden opgestuurd:
+- Through a verification endpoint made available by TOEGANG.ORG;
+- By performing the verification yourself using the public key of TOEGANG.ORG.
+
+### (3a) Verification endpoint
+
+the verification endpoint verifies the JWS and sends back the payload.
+The endpoint can be reached at `https://api.toegang.org/jwt/verify`, for the test environment the correct url is `https://api-test.toegang.org/jwt/verify`.
+The JWS must be sent in the body of a POST request as a JSON object (with 1 field `jws`):
 
 ```http request
 POST /jwt/verify HTTP/1.1
@@ -75,52 +80,52 @@ Content-Type: application/json
   "jws": "eyJhbGciOiJSUzI1NiIsImtpZCI6InpKYzVGYkFHelM2Ul9BOWN1W..."
 }
 ```
-Een voorbeeld-JWS om dit mee te testen wordt op `https://api-test.toegang.org/jwt/testjwt` beschikbaar gesteld.
 
-De body van de response is een JSON-object waarvan het veld `payload` de informatie over de gebruiker bevat.
+An example JWS for testing this is made available at `https://api-test.toegang.org/jwt/testjwt`.
 
-### (3b) Zelf de JWS verifiëren
-Om de JWS zelf te kunnen verifiëren is de publieke sleutel van TOEGANG.ORG nodig. 
-Deze sleutel kan worden opgevraagd op het endpoint: `https://api.toegang.org/jwt/jwks`. 
-Op de test omgeving is dat `https://api-test.toegang.org/jwt/jwks`.  
-Het response-object is een JSON Web Key Set (JWKS), voor meer informatie zie de [specificatie](https://tools.ietf.org/html/rfc7517#page-25).
+The body of the response is a JSON object. The `payload` field contains information about the user.
 
-Er zijn een aantal voorbeeld applicaties gemaakt waarin is uitgewerkt hoe de JWS kan worden gedecodeerd en geverifieerd. 
-Er zijn voorbeeld applicaties in de volgende talen:
+### (3b) Verify the JWS yourself
+
+To be able to verify the JWS itself, the public key of TOEGANG.ORG is required.
+This key can be requested at the endpoint: `https://api.toegang.org/jwt/jwks`.
+Or if you are testing your implementation: `https://api-test.toegang.org/jwt/jwks`.  
+The response object is a JSON Web Key Set (JWKS), for more information see the [specification](https://tools.ietf.org/html/rfc7517#page-25).
+
+The following examples are available:
+
 - PHP  
-https://github.com/topicusonderwijs/toegang.org.examples/tree/master/examples/php;
+  https://github.com/topicusonderwijs/toegang.org.examples/tree/master/examples/php;
 - Node.js  
-https://github.com/topicusonderwijs/toegang.org.examples/tree/master/examples/nodejs. 
+  https://github.com/topicusonderwijs/toegang.org.examples/tree/master/examples/nodejs.
 
-Zorg er in ieder geval voor dat de handtekening geverifieerd wordt, en dat de timestamp in het `exp` (expires)
-veld nog in de toekomst ligt.
+At least, make sure the signature is verified and the timestamp in the `exp` (expires) field is in the future.
 
+## Step 4. Process information from the JWS
 
-## Stap 4. Verwerk informatie uit de JWS
+A verified JWS contains the fields described below.
 
-De payload van de geverifieerde JWS bevat de volgende velden:
+| Field   | Mandatory | Omschrijving                                                                                                                  |
+| ------- | :-------: | ----------------------------------------------------------------------------------------------------------------------------- |
+| aud     |    Yes    | Unique identifier of the publisher's organization (UUID)                                                                      |
+| ean     |    Yes    | EAN of the product                                                                                                            |
+| exp     |    Yes    | Timestamp when the token expires (**milliseconds** since Unix epoch)                                                          |
+| ref     |    Yes    | Support code for the service desk to be able to follow the user through the process (XXXXXXXX - XXXXXXXX)                     |
+| sub     |    Yes    | ID of the account that is unique to the publisher (32 or 64 (= old) hex characters)                                           |
+| tlink   |    Yes    | TLink code of the license (XXXXXXXX)                                                                                          |
+| email   |    No     | Verified email of the user                                                                                                    |
+| extids  |    No     | Unique identifier of a user at other publishers (only supplied when sublicenses are used) - [{"orgid": ..., "externId": ...}] |
+| fn      |    No     | First name of the user                                                                                                        |
+| lac     |    No     | Linked accounts; array with historical identifiers of this user due to a merger or account merge, for example                 |
+| org     |    No     | ESN of the user's school or organization that includes that school (UUID)                                                |
+| orgname |    No     | Name of the user's school or organization that includes that school                                                      |
+| rol     |    No     | Role of the logged in user (eduPersonAffiliation)                                                                             |
+| rnd     |    No     | Random UUID to detect replay attacks                                                                                          |
+| endDate |    No     | _(coming soon)_ End date of the license (2020-04-01)                                                                          |
 
-Veld    | Verplicht | Omschrijving
----     | :---:     | ---
-aud     | Ja        | Unieke identifier van de organisatie van de uitgever (UUID)
-ean     | Ja        | EAN van het product
-exp     | Ja        | Timestamp van het tijdstip tot wanneer de JWS geldig is (**milliseconden** sinds Unix epoch, i.t.t. RFC 7519)
-ref     | Ja        | Meldcode voor de helpdesk om de gebruiker te kunnen volgen door het proces (XXXXXXXX - XXXXXXXX)
-sub     | Ja        | ID van het account die uniek is voor de uitgever (32 of 64 (=oud) hex karakters)
-tlink   | Ja        | TLink-code van de licentie (XXXXXXXX)
-email   | Nee       | Geverifieerde email van de gebruiker
-extids  | Nee       | Unieke identifier van een gebruiker bij andere uitgevers (alleen gevuld wanneer er sublicenties worden gebruikt) - [{"orgid":...,"externId":...}]
-fn      | Nee       | Voornaam van de gebruiker
-lac     | Nee       | Linked accounts; array met historische identifiers van deze gebruiker door bijvoorbeeld een fusie of account merge
-org     | Nee       | ESN van de school van de gebruiker of organisatie waar die school onder valt (UUID)
-orgname | Nee       | Naam van de school van de gebruiker of organisatie waar die school onder valt
-rol	    | Nee	    | Rol van de ingelogde gebruiker (eduPersonAffiliation)
-rnd	| Nee		| Random UUID om replay attacks te detecteren
-endDate	| Nee	    | *(binnenkort)* Einddatum van de licentie (2020-04-01)
-
-Op basis van deze gegevens zou de uitgever de gebruiker in moeten kunnen loggen.
-Log de gebruiker in voor het product wat in het `ean` veld staat.
-Voorbeeld payload:
+The publisher should be able to log in the user based on this data.
+Log in the user for the product in the `ean` field.
+Example payload:
 
 ```
 {
@@ -142,23 +147,19 @@ Voorbeeld payload:
 }
 ```
 
-**LET OP**: omdat TOEGANG.ORG niet bij alle
-inlogflows een sterke garantie kan geven m.b.t. de identiteit van de gebruiker is het niet aan te raden om persoonlijke
-gegevens te koppelen aan de gebruiker. Voor de toekomst staat wel functionaliteit gepland waarmee de uitgever een
-sterkere authenticatie af kan dwingen.
+**PLEASE NOTE**: because TOEGANG.ORG cannot give a strong guarantee with regard to the identity of the user, it is not advisable to link personal data to the user.
+For the future, functionality is planned to allow the publisher to enforce stronger authentication.
 
-In de toekomst worden mogelijk nieuwe velden toegevoegd, houd hier rekening mee bij de implementatie.
+New fields may be added in the future, keep this in mind during implementation.
 
-## Stap 5. Terugkoppeling naar TOEGANG.ORG
+## Step 5. Callback to TOEGANG.ORG
 
-Om het mogelijk te maken voor TOEGANG.ORG om de koppeling met de uitgever te monitoren, dient de gebruiksomgeving
-terug te koppelen dat de gebruiker goed is ontvangen. 
-Als er geen terugkoppelingen worden gedaan, dan gaat TOEGANG.ORG er vanuit dat de koppeling met de uitgever niet werkt.  
-De terugkoppeling is vooral van belang voor producten met een licentie die een bepaald aantal keer mag worden gebruikt (type = AANTAL),
-omdat pas bij de terugkoppeling er van de de licentie wordt afgeschreven.
+To make it possible for TOEGANG.ORG to monitor the link with the publisher, the learning environment must perform a callback when the user has been well received.
+If no callback is performed, TOEGANG.ORG will assume that the link with the publisher is not working.
+The callback is especially important for products with a license that may only be used a certain number of times (type = NUMBER), because the license is only debited upon receiving the callback.
 
-De terugkoppeling wordt gedaan op het endpoint `https://api.toegang.org/callback/`; op de testomgeving is dat
-`https://api-test.toegang.org/callback/`. Het formaat is als volgt:
+The endpoint to use for the callback is: `https://api.toegang.org/callback/`; for the test environment it is `https://api-test.toegang.org/callback/`.
+An example request:
 
 ```http request
 POST /callback/ HTTP/1.1
@@ -170,41 +171,37 @@ Content-Type: application/json
 }
 ```
 
-De request body moet bestaan uit een JSON object met twee velden:
- 1. `jws` bevat het token wat zojuist ontvangen is;
- 2. `payload` bevat de waarde van het `payload`-object van de geverifieerde JWS. Door dit veld
-    kan TOEGANG.ORG controleren dat het decoderen van de JWS gelukt is.
+The request body consists of a JSON object with two fields:
 
-Dit request geeft een lege response met een van de volgende statuscodes:
+1.  `jws` has to contain the token you just received
+2.  `payload` has to contain the the `payload` object of the verified JWS. This field allows TOEGANG.ORG to check if the JWS has been successfully decoded.
 
-Statuscode | Omschrijving
----        | ---
-204        | De terugkoppeling is in goede orde ontvangen
-400        | Het request object was niet in het juiste formaat
-401        | De JWS is niet geldig
+The response is always an empty body with one of the following status codes.
 
+| Statuscode | Omschrijving                                     |
+| ---------- | ------------------------------------------------ |
+| 204        | The request was valid                            |
+| 400        | The request object was not in the correct format |
+| 401        | The JWS is not valid                             |
 
-## Testen
+## Testing
 
-Als bovenstaande stappen aan de kant van de uitgever geïmplementeerd zijn, kan de inlogflow getest worden. Hiervoor moeten
-er in de TOEGANG.ORG-testomgeving wel eerst licenties uitgegeven zijn voor de betreffende producten.
-Dit kan op verschillende manieren gebeuren; hetzij op verzoek door onze supportmedewerkers, hetzij rechtstreeks door uzelf
-via onze API (zie hieronder). Vervolgens kan er een gebruiker inloggen via een van de volgende URLs:
- - `https://test.toegang.org/{TLink}` (waar `{TLink}` vervangen wordt door een daadwerkelijke TLink-code van een licentie)
- - `https://test.toegang.org/{EAN}` (waar `{EAN}` vervangen wordt door het EAN van een van de geregistreerde producten; hierbij wordt
- de authenticatie gefedereerd naar Kennisnet)
+After the publisher implements the above steps, the login flow can be tested.
+First thing that we need to test are license codes (TLinks).  
+To get license codes you can either request them from our support staff or create them yourself by using our API (see below).
+A user can then log in using one of the following URLs:
 
-Bij de eerste keer inloggen vraagt TOEGANG.ORG om een aantal persoonlijke gegevens. Daarna wordt de gebruiker doorgestuurd naar
-de omgeving van de uitgever. 
+- `https://test.toegang.org/{TLink}` (`{TLink}` has to be replaced by the actual TLink-code)
+- `https://test.toegang.org/{EAN}` (`{EAN}` has to be replaced by the EAN of the product. note: a `Kennisnet` account is needed)
 
-## Autorisatie
+When a user logs in for the first time, TOEGANG.ORG asks for some personal information.
+The user is then redirected to the publisher's environment.
 
-Om gebruik te kunnen maken van de TOEGANG.ORG API heeft u OAuth2 "client credentials" nodig
-en moet het betreffende product ingericht zijn bij TOEGANG.ORG, zoals hierboven besproken.
-Hiervoor heeft u eerst een tijdelijk Access Token nodig; deze is te verkrijgen door een
-OAuth2 client token request te doen op `https://idp.toegang.org/oidc/token` (test: `https://idp-test.toegang.org/oidc/token`).
-Hierbij moeten de OAuth2 client name en client secret, gescheiden door `:` en vervolgens URL-safe Base64-encoded, in
-de `Authorization` header meegegeven worden.
+## Authorisation
+
+In order to use the TOEGANG.ORG API you need OAuth2 "client credentials" and the relevant product must be configured with TOEGANG.ORG, as discussed above.
+For this you first need a temporary Access Token; this can be obtained by making an OAuth2 client token request at `https://idp.toegang.org/oidc/token` (test: `https://idp-test.toegang.org/oidc/token`).
+The `Authorization` header must contain the OAuth2 client name and client secret, separated by `:` and then URL-safe Base64-encoded.
 
 ```http request
 POST /token HTTP/1.1
@@ -213,7 +210,9 @@ Authorization: Basic Y2xpZW50LWlkOmNsaWVudC1zZWNyZXQ=
 
 grant_type=client_credentials
 ```
-Bij een succesvolle request ziet de response (JSON) er als volgt uit:
+
+An example response:
+
 ```
 {
     "access_token": "YmFkN2Y3ZmItOTUzZC00M2YyLWExNmUtYW...",
@@ -221,28 +220,30 @@ Bij een succesvolle request ziet de response (JSON) er als volgt uit:
     "token_type": "Bearer"
 }
 ```
-Deze access_token kunt u vervolgens gebruiken om API calls te maken naar `https://api.toegang.org` (testomgeving: 
-`https://api-test.toegang.org`) door deze in de Header mee te geven (Authorization: Bearer {{token}})
 
-## Aanmaken van licenties
+You can then use this access_token to make API calls to `https://api.toegang.org` (test:
+`https://api-test.toegang.org`) by supplying the access_token in the Authorization header. See the example below.
 
-Uitgevers kunnen via de TOEGANG.ORG API licenties aanmaken.
-Dit kan met behulp van onderstaande request:
+## Creating licenses
+
+Publishers can create licenses via the TOEGANG.ORG API. A request looks like this:
+
 ```http request
 POST /tlinklicenses/getLicenseCodes?productId=9789999999664&requestReferenceId=123&amount=50&distributorId=Edubert HTTP/1.1
 Authorization: Bearer YmFkN2Y3ZmItOTUzZC00M2YyLWExNmUtYW...
 ```
 
-Het ophalen van een Authorization token wordt uitgelegd in het hoofdstuk Autorisatie
+Retrieving an Authorization token is explained in the Authorization chapter above.
 
-parameter            | betekenis
----                  | ---
-`productId`          | EAN van het product waarvoor de licenties aangemaakt worden
-`requestReferenceId` | Door de uitgever aangemaakte referentie voor deze batch. Max. 160 karakters. Mag niet eerder gebruikt zijn
-`amount`             | Aantal licenties dat aangemaakt moet worden
-`distributorId`      | Naam van de uitgever zoals overeengekomen met TOEGANG.ORG
+| parameter            | meaning                                                                                  |
+| -------------------- | ----------------------------------------------------------------------------------------- |
+| `productId`          | Product EAN                                                                               |
+| `requestReferenceId` | Reference created by the publisher for this batch. Max 160 characters. Needs to be unique |
+| `amount`             | Amount of licenses to be created                                                          |
+| `distributorId`      | Name of the publisher as agreed with TOEGANG.ORG                                          |
 
-Bij een succesvolle request ziet de response (JSON) er als volgt uit:
+A successful request leads to a response that looks like this:
+
 ```http request
 {
     "codes": [
@@ -254,23 +255,26 @@ Bij een succesvolle request ziet de response (JSON) er als volgt uit:
     "endDate": "2024-08-01"
 }
 ```
-Hier is `codes` het lijstje met nieuwe TLink-licentiecodes (zo veel als aangevraagd). `startDate` is de startdatum van het
-product als dat nog in de toekomst ligt, en anders de huidige datum. `endDate` is de einddatum van het product.
 
-Voor dit request bieden we voorbeeldimplementaties voor zowel PHP als NodeJS.
+`codes` is an array containing the number of license codes requested.
+`startDate` is the start date of the product if this is the future, else it's the date of today.
+`endDate` is the end date of the product.
 
-## Ophalen van licenties
+We offer example implementations for both PHP and NodeJS of this call.
 
-Voor het ophalen van licenties van een gebruiker wordt een API call gebruikt.
-Daarvoor is de Account ID van de gebruiker nodig, welke te vinden is in de 'sub' van JWS (zie stap 4).
-Deze Account ID moet in de plaats {{user-id}} in onderstaande request komen.
-Daarnaast moet de autorisatiecode (zie het hoofdstuk autorisatie) mee worden gestuurd.
+## Retrieve licenses
+
+It is possible to retrieve all licenses of a user by making a call to the licenses API.
+This requires the Account ID of the user, which can be found in the 'sub' of JWS (see step 4).
+This Account ID must replace {{user-id}} in the request below. In addition, the authorization code (see the authorization chapter) must also be sent.
+
 ```http request
 GET /accounts/{{user-id}}/licenses HTTP/1.1
 Authorization: Bearer YmFkN2Y3ZmItOTUzZC00M2YyLWExNmUtYW...
 ```
 
-Bij een succesvolle request ziet de response (JSON) er als volgt uit:
+The response looks like this:
+
 ```http request
 {
     "licenseState": "ACTIVE",
@@ -284,28 +288,29 @@ Bij een succesvolle request ziet de response (JSON) er als volgt uit:
 }
 ```
 
-parameter            | betekenis
----                  | ---
-`licenseState`       | Status van de licentie (alleen ACTIVE licenties worden opgehaald met deze call)
-`startDate`          | Datum vanaf wanneer deze licentie geactiveerd had kunnen worden
-`activationDate`     | Datum en tijd vanaf wanneer het product voor deze gebruiker geactiveerd is
-`endDate`            | Datum vanaf wanneer het product niet meer gebruikt kan worden door deze gebruiker
-`product`            | Een product waar de gebruiker toegang tot heeft
-`ean`                | EAN van het product
-`licenseType`        | Licentietype van het product
+| parameter        | description                                                        |
+| ---------------- | ------------------------------------------------------------------ |
+| `licenseState`   | License status (only ACTIVE licenses are retrieved with this call) |
+| `startDate`      | Start date of the license                                          |
+| `activationDate` | Activation date of the license                                     |
+| `endDate`        | End date of the license                                            |
+| `product`        | product container                                                  |
+| `ean`            | EAN of the product                                                 |
+| `licenseType`    | License type of the product                                        |
 
-## KNF attributen ophalen
+## Retrieving KNF attributes
 
-Om de KNF attributen van een gebruiker op te halen heb je éen van de TLinks van deze gebruiker nodig.
-Belangrijk daarbij is dat de gebruiker al eens via TOEGANG.ORG via Kennisnet ingelogd
-moet zijn geweest voordat de KNF attributen beschikbaar zijn.
-De TLink is te verkrijgen uit de payload van JWS (zie stap 4)
+To retrieve the KNF attributes of a user you need one of the TLinks of this user.
+The attributes are only available if the user logged in once via Kennisnet.
+The TLink can be obtained from the JWS payload (see step 4)
+
 ```http request
 GET /accounts/attributes/{{tlink}} HTTP/1.1
 Authorization: Bearer YmFkN2Y3ZmItOTUzZC00M2YyLWExNmUtYW...
 ```
 
-Bij een succesvolle request ziet de response (JSON) er als volgt uit:
+The response looks like this:
+
 ```http request
 {
 	"uid": ["4fa672@iets"],
@@ -326,12 +331,12 @@ Bij een succesvolle request ziet de response (JSON) er als volgt uit:
 }
 ```
 
-Dit zijn de meest voorkomende attributen. Het kan voorkomen dat er meer of minder attributen bekend zijn van de gebruiker. Als een gebruiker meerdere KNF accounts heeft, bevatten de arrays meer dan 1 element.
-De meegegeven KNF attributen worden in de volgende link uitgebreid uitgelegd:
-https://developers.wiki.kennisnet.nl/index.php?title=KNF:Attributen_overzicht_voor_Identity_Providers
+These are the most common attributes. It is possible that more or fewer attributes are known from the user.
+If a user has multiple KNF accounts, the arrays contain more than 1 element.
+The KNF attributes provided are explained in detail in the following link: https://developers.wiki.kennisnet.nl/index.php?title=KNF:Attributen_overzicht_voor_Identity_Providers
 
-## Postman voorbeelden
+## Postman examples
 
-Alle bovenstaande requests zijn ook te testen met [Postman](https://www.getpostman.com). Importeer de
-[TOEGANG.ORG collection](examples/toegang.org.examples.postman_collection.json) en vul in de variables uw eigen
-`client-name`, `client-secret`, `client-id` en `tlink` in.
+All the above requests can also be tested with [Postman](https://www.getpostman.com). Import the
+[TOEGANG.ORG collection](examples/toegang.org.examples.postman_collection.json) and enter your own
+`client-name`, `client-secret`, `client-id` and `tlink`.
