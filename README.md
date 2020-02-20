@@ -123,7 +123,7 @@ A verified JWS contains the fields described below.
 | rnd     |    No     | Random UUID to detect replay attacks                                                                                          |
 | endDate |    No     | _(coming soon)_ End date of the license (2020-04-01)                                                                          |
 
-The publisher should be able to log in to the user based on this data.
+The publisher should be able to log in the user based on this data.
 Log in the user for the product in the `ean` field.
 Example payload:
 
