@@ -229,18 +229,18 @@ You can then use this access_token to make API calls to `https://api.toegang.org
 Publishers can create licenses via the TOEGANG.ORG API. A request looks like this:
 
 ```http request
-POST /tlinklicenses/getLicenseCodes?productId=9789999999664&requestReferenceId=123&amount=50&distributorId=Edubert HTTP/1.1
+POST /tlinklicenses/getLicenseCodes?productId=9789999999664&requestReferenceId=123&amount=50&eckUsername=Edubert HTTP/1.1
 Authorization: Bearer YmFkN2Y3ZmItOTUzZC00M2YyLWExNmUtYW...
 ```
 
 Retrieving an Authorization token is explained in the Authorization chapter above.
 
-| parameter            | meaning                                                                                  |
+| parameter            | meaning                                                                                   |
 | -------------------- | ----------------------------------------------------------------------------------------- |
 | `productId`          | Product EAN                                                                               |
 | `requestReferenceId` | Reference created by the publisher for this batch. Max 160 characters. Needs to be unique |
 | `amount`             | Amount of licenses to be created                                                          |
-| `distributorId`      | Name of the publisher as agreed with TOEGANG.ORG                                          |
+| `eckUsername`        | Name of the eck username as agreed with TOEGANG.ORG                                       |
 
 A successful request leads to a response that looks like this:
 
