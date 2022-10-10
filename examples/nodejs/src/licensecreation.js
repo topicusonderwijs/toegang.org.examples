@@ -14,7 +14,7 @@ const _createLicenseProperties = function(productEan, uitgeverId, aantal){
     return {
         productId: productEan,
         requestReferenceId: uuid(),
-        distributorId: uitgeverId,
+        eckUsername: uitgeverId,
         amount: aantal
     }
 };
