@@ -21,7 +21,7 @@ class LicenseApi {
 
         if(isset($token)){
                 $headers = array('Content-Type: application/json', 'Authorization: Bearer '.$token);
-                $queryString = "productId=".$productEan."&requestReferenceId=".$referenceId."&distributorId=".$uitgeverId."&amount=".$aantalLicenties;
+                $queryString = "productId=".$productEan."&requestReferenceId=".$referenceId."&eckUsername=".$uitgeverId."&amount=".$aantalLicenties;
                 $options = [
                     CURLOPT_URL => $config['api_license_uri']."?".$queryString,
                     CURLOPT_HTTPHEADER => $headers,

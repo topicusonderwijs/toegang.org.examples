@@ -159,7 +159,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "{{api-root}}/tlinklicenses/getLicenseCodes?amount=5&requestReferenceId=123&distributorId=Edubert&productId=9789999999664",
+					"raw": "{{api-root}}/tlinklicenses/getLicenseCodes?amount=5&requestReferenceId=123&eckUsername=Edubert&productId=9789999999664",
 					"host": [
 						"{{api-root}}"
 					],
@@ -177,7 +177,7 @@
 							"value": "123"
 						},
 						{
-							"key": "distributorId",
+							"key": "eckUsername",
 							"value": "Edubert"
 						},
 						{
